@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM Brogas Mayorista</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f5; color:#1a1a2e; }
+
+.header { background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); color:white; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; box-shadow:0 4px 12px rgba(0,0,0,.15); }
+.header h1 { font-size:22px; font-weight:700; }
+.header .sub { font-size:11.5px; opacity:.6; margin-top:3px; }
+.stats { display:flex; gap:10px; flex-wrap:wrap; }
+.sbox { background:rgba(255,255,255,.1); border-radius:9px; padding:9px 15px; text-align:center; min-width:68px; }
+.sbox .n { font-size:22px; font-weight:700; }
+.sbox .l { font-size:9.5px; opacity:.7; text-transform:uppercase; letter-spacing:.6px; }
+.sbox.or { background:rgba(230,81,0,.3); }
+.sbox.pu { background:rgba(106,27,154,.3); }
+.sbox.go { background:rgba(245,127,23,.35); }
+
+.tabs { display:flex; background:white; border-bottom:3px solid #e0e0e0; padding:0 32px; overflow-x:auto; }
+.tab { padding:13px 20px; cursor:pointer; font-size:13px; font-weight:600; color:#999; border-bottom:3px solid transparent; margin-bottom:-3px; transition:all .2s; display:flex; align-items:center; gap:7px; white-space:nowrap; }
+.tab:hover { color:#0f3460; background:#f5f7ff; }
+.tab.active { color:#0f3460; border-bottom-color:#0f3460; }
+.cnt { background:#eee; color:#555; border-radius:20px; padding:2px 8px; font-size:11px; font-weight:700; }
+.tab.active .cnt { background:#0f3460; color:white; }
+
+.controls { padding:11px 32px; display:flex; gap:9px; align-items:center; flex-wrap:wrap; background:white; border-bottom:1px solid #e8e8e8; }
+.search-box { flex:1; min-width:190px; padding:8px 13px; border:2px solid #e0e0e0; border-radius:8px; font-size:13px; transition:border-color .2s; }
+.search-box:focus { outline:none; border-color:#0f3460; }
+select.filter { padding:8px 12px; border:2px solid #e0e0e0; border-radius:8px; font-size:12.5px; background:white; cursor:pointer; color:#444; }
+
+.table-container { padding:14px 32px; overflow-x:auto; }
+table { width:100%; border-collapse:collapse; background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.07); }
+thead { background:#1a1a2e; color:white; }
+th { padding:11px 12px; text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; font-weight:600; white-space:nowrap; }
+td { padding:10px 12px; font-size:12.5px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+tr:last-child td { border-bottom:none; }
+tr:hover { background:#f8f9ff; }
+tr.row-conv { background:#fffde7; }
+tr.row-conv:hover { background:#fff9c4; }
+
+.badge { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:20px; font-size:10.5px; font-weight:700; white-space:nowrap; }
+.b-nuevo       { background:#e3f2fd; color:#1565c0; }
+.b-enviado     { background:#fff3e0; color:#e65100; }
+.b-seguimiento { background:#f3e5f5; color:#6a1b9a; }
+.b-convertido  { background:#e8f5e9; color:#2e7d32; }
+.b-prov        { background:#f5f5f5; color:#555; }
+
+.btn { padding:7px 13px; border:none; border-radius:7px; cursor:pointer; font-size:11.5px; font-weight:600; transition:all .18s; display:inline-flex; align-items:center; gap:5px; white-space:nowrap; text-decoration:none; }
+.btn-enviar   { background:#dbeafe; color:#1d4ed8; border:1.5px solid #93c5fd; }
+.btn-enviar:hover   { background:#bfdbfe; }
+.btn-contacto { background:#f3e5f5; color:#6a1b9a; border:1.5px solid #ce93d8; }
+.btn-contacto:hover { background:#e1bee7; }
+.btn-conv     { background:#dcfce7; color:#166534; border:1.5px solid #86efac; }
+.btn-conv:hover     { background:#bbf7d0; }
+.btn-edit     { background:#fef9c3; color:#854d0e; border:1.5px solid #fde047; font-size:10.5px; padding:5px 10px; }
+.btn-copy     { background:#f5f5f5; color:#444; border:1.5px solid #ddd; }
+.btn-copy:hover     { background:#eee; }
+.btn-copy.copied    { background:#166534; color:white; border-color:#166534; }
+.btn-wpp      { background:#25D366; color:white; }
+.btn-wpp:hover      { background:#16a34a; }
+.actions { display:flex; gap:5px; flex-wrap:wrap; align-items:center; }
+.action-col { min-width:140px; }
+
+.sel-vend { padding:5px 7px; border:2px solid #dbeafe; border-radius:6px; font-size:11px; font-weight:600; color:#1d4ed8; background:#dbeafe; cursor:pointer; min-width:155px; }
+.sel-vend:focus { outline:none; border-color:#1d4ed8; }
+.sel-vend.ov { background:#fff3e0; border-color:#f57c00; color:#c2410c; }
+.ov-label { font-size:9.5px; color:#f57c00; margin-top:2px; }
+
+.ap { font-weight:600; }
+.nm { color:#777; font-size:11px; }
+.cc { max-width:160px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
+.cc:hover { white-space:normal; overflow:visible; background:#fffde7; position:relative; z-index:10; border-radius:4px; padding:2px 4px; }
+
+.cv-monto { font-weight:700; color:#166534; }
+.cv-fecha  { font-size:11px; color:#777; margin-top:2px; }
+
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000; align-items:center; justify-content:center; }
+.modal-bg.open { display:flex; }
+.modal { background:white; border-radius:16px; padding:30px; width:380px; box-shadow:0 20px 60px rgba(0,0,0,.2); animation:pop .2s ease; }
+@keyframes pop { from{transform:scale(.88);opacity:0} to{transform:scale(1);opacity:1} }
+.modal h3 { font-size:17px; margin-bottom:4px; }
+.modal .msub { font-size:12px; color:#888; margin-bottom:16px; }
+.modal label { display:block; font-size:11.5px; font-weight:600; color:#555; margin:12px 0 4px; }
+.modal input { width:100%; padding:9px 13px; border:2px solid #e0e0e0; border-radius:8px; font-size:13.5px; font-family:inherit; transition:border-color .2s; }
+.modal input:focus { outline:none; border-color:#0f3460; }
+.modal-btns { display:flex; gap:9px; margin-top:20px; justify-content:flex-end; }
+.btn-ok { background:#166534; color:white; padding:9px 20px; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; }
+.btn-ok:hover { background:#14532d; }
+.btn-cancel { background:#f5f5f5; color:#555; padding:9px 16px; border:1.5px solid #ddd; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
+
+.toast { position:fixed; bottom:24px; right:24px; background:#1a1a2e; color:white; padding:11px 20px; border-radius:10px; font-size:13px; font-weight:600; box-shadow:0 4px 14px rgba(0,0,0,.2); transform:translateY(70px); opacity:0; transition:all .25s ease; z-index:2000; }
+.toast.show { transform:translateY(0); opacity:1; }
+.empty { text-align:center; padding:54px 20px; color:#bbb; }
+.empty .ico { font-size:40px; margin-bottom:8px; }
+.update-info { padding:7px 32px; font-size:11px; color:#bbb; text-align:right; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>CRM Brogas Mayorista</h1>
+    <div class="sub">brogas1958.com/mayoristas · Infomayorista@brogas.com</div>
+  </div>
+  <div class="stats">
+    <div class="sbox"><div class="n" id="sTotal">0</div><div class="l">Total</div></div>
+    <div class="sbox"><div class="n" id="sNuevos">0</div><div class="l">Nuevos</div></div>
+    <div class="sbox or"><div class="n" id="sEnviados">0</div><div class="l">Enviados</div></div>
+    <div class="sbox pu"><div class="n" id="sSeg">0</div><div class="l">Seguimiento</div></div>
+    <div class="sbox go"><div class="n" id="sConv">0</div><div class="l">Convertidos</div></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('nuevos')"      id="tab-nuevos">📥 Nuevos leads <span class="cnt" id="cnt-nuevos">0</span></div>
+  <div class="tab"        onclick="switchTab('enviados')"    id="tab-enviados">📤 Enviados al vendedor <span class="cnt" id="cnt-enviados">0</span></div>
+  <div class="tab"        onclick="switchTab('seguimiento')" id="tab-seguimiento">📞 En seguimiento <span class="cnt" id="cnt-seguimiento">0</span></div>
+</div>
+
+<div class="controls">
+  <input  class="search-box" id="searchInput"    placeholder="Buscar nombre, razón social, CUIT, provincia...">
+  <select class="filter"     id="filterVendedor"><option value="">Todos los vendedores</option></select>
+  <select class="filter"     id="filterProvincia"><option value="">Todas las provincias</option></select>
+  <select class="filter"     id="filterRubro"><option value="">Todos los rubros</option></select>
+</div>
+
+<div class="table-container">
+  <table>
+    <thead><tr id="thead"></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+<div class="update-info" id="updateInfo"></div>
+<div class="toast" id="toast"></div>
+
+<div class="modal-bg" id="convModal">
+  <div class="modal">
+    <h3>🏆 Registrar conversión</h3>
+    <div class="msub" id="modalSub"></div>
+    <label>Monto de la venta ($)</label>
+    <input type="number" id="inMonto" placeholder="Ej: 150000" min="0">
+    <label>Fecha de conversión</label>
+    <input type="date" id="inFecha">
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-ok"     onclick="confirmConv()">✔ Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
+// ══════════════════════════════════════════════════════════════
+const leads = [
+  { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
+  { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
+  { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
+  { fecha:"2026-04-04", nombre:"Diego Adrián",           apellido:"D'Alloro",       razon_social:"Diego Adrian D'Alloro (MAQUINAS NORTE)",cuit:"20-29505184-2",  email:"maquinasnorte.compras@gmail.com",   telefono:"01160419998",       rubro:"Insumos para jardinería, sistemas de riego, entre otros", comentarios:"",                                                                                                        messageId:"19d588d5eda25cd4" },
+  { fecha:"2026-04-01", nombre:"Roberto Oscar",          apellido:"González",       razon_social:"Armería Shooter",                     cuit:"20278465005",    email:"armeriashooterok@gmail.com",        telefono:"2268455617",        rubro:"Armería, caza, pesca y Outdoor",                          comentarios:"",                                                                                                        messageId:"19d4b1ea8cf21722" },
+  { fecha:"2026-04-01", nombre:"Marcelo",                apellido:"Paz",            razon_social:"Mmya",                                cuit:"20288551392",    email:"monomonteros250@gmail.com",         telefono:"+543863443482",     rubro:"Multitubro deporte calzado camping",                      comentarios:"",                                                                                                        messageId:"19d4a109dd640074" },
+  { fecha:"2026-04-01", nombre:"Diego Nicolas",          apellido:"Pizzo",          razon_social:"Mtbikecicloturismo sas",              cuit:"30716360179",    email:"ciclismozonalvetania@gmail.com",    telefono:"01133489897",       rubro:"Bike & adventure store",                                  comentarios:"Queremos incorporar nuevos productos al local",                                                           messageId:"19d48ee9b5c26483" },
+  { fecha:"2026-03-31", nombre:"Alexander",              apellido:"Scherer",        razon_social:"C",                                   cuit:"20360616739",    email:"schererale60@gmail.com",            telefono:"3765095914",        rubro:"Ferretería",                                              comentarios:"",                                                                                                        messageId:"19d43d6b9e19f23a" },
+  { fecha:"2026-03-31", nombre:"Andrea",                 apellido:"Olivares",       razon_social:"FABBRI SRL",                          cuit:"30522074280",    email:"fabbri.sanitarios@gmail.com",       telefono:"3412781211",        rubro:"Instalaciones sanitarias",                                comentarios:"Necesitamos comprar al por mayor, cartuchos de gas butano",                                              messageId:"19d439f36930c7a7" },
+  { fecha:"2026-03-30", nombre:"Maximiliano",            apellido:"Ruiz",           razon_social:"20278636424",                         cuit:"20-27863642-4",  email:"kubo.tiendaparaempresas@gmail.com", telefono:"3417472510",        rubro:"Artículos de navegación y cámping",                       comentarios:"Somos una tienda online, aún no contamos con cuit",                                                       messageId:"19d4086781073809" },
+  { fecha:"2026-03-30", nombre:"Luciano Daniel",         apellido:"Matoso",         razon_social:"Amel casa de picadas",                cuit:"20278325777",    email:"ldm1980@outlook.com",               telefono:"2915752657",        rubro:"Varios",                                                  comentarios:"",                                                                                                        messageId:"19d3fc7ad1129cd3" },
+  { fecha:"2026-03-30", nombre:"Beatriz Maria",          apellido:"Lotto",          razon_social:"Lotto Beatriz Maria",                 cuit:"27-14780984-6",  email:"comprasbazararmando@gmail.com",     telefono:"3404-434382",       rubro:"Bazar",                                                   comentarios:"El negocio se llama Bazar Armando, estamos en san martin 293, esquina r.f. coulin, en Galvez, santa fe", messageId:"19d3f1c6cc7d44e8" },
+  { fecha:"2026-03-29", nombre:"Belen",                  apellido:"Lopez",          razon_social:"Indumentariamax",                     cuit:"27365409272",    email:"agusbel.bl@gmail.com",              telefono:"3875543492",        rubro:"Actividades al aire libre",                               comentarios:"Tenemos anafe mini, nos faltan los cartuchos, seria ideal saber los precios por mayor.",                 messageId:"19d39453cd1c4ecb" },
+  { fecha:"2026-03-28", nombre:"Javier",                 apellido:"Ignacio",        razon_social:"Territorio salvaje",                  cuit:"23342634109",    email:"Javi_77_89@hotmail.com",            telefono:"2915275074",        rubro:"Venta de artículos de camping",                           comentarios:"",                                                                                                        messageId:"19d3637bce939652" },
+  { fecha:"2026-03-28", nombre:"Tomas",                  apellido:"Rosa",           razon_social:"Urbanova",                            cuit:"20217641700",    email:"tomasrosag@gmail.com",              telefono:"541168612001",      rubro:"Tienda Online",                                           comentarios:"",                                                                                                        messageId:"19d3605c51e8d062" },
+  { fecha:"2026-03-28", nombre:"Alcides Orlando",        apellido:"Leiva",          razon_social:"Comercio",                            cuit:"20364068450",    email:"leivafishing.vosf@gmail.com",       telefono:"3482652307",        rubro:"Venta artículos pesca y camping",                         comentarios:"",                                                                                                        messageId:"19d35ed46a119a13" },
+  { fecha:"2026-03-27", nombre:"Daniel",                 apellido:"Barboza",        razon_social:"Kioskosintacc",                       cuit:"20231818376",    email:"dapabarboza@hotmail.com",           telefono:"1169677465",        rubro:"Varios",                                                  comentarios:"Me interesan sus productos para venta minorista.",                                                        messageId:"19d3096d2c1ce761" },
+  { fecha:"2026-03-27", nombre:"Daniel Osvaldo",         apellido:"Giraudi",        razon_social:"GIRAUDI DANIEL OSVALDO",              cuit:"20-20439240-5",  email:"dogiraudi@hotmail.com",             telefono:"03624335216",       rubro:"Comercio minorista",                                      comentarios:"Insumos para soderos, gases industriales, carga de garrafitas, artículos para gas.",                     messageId:"19d30177cc61d97a" },
+  { fecha:"2026-03-27", nombre:"Lucas Leandro",          apellido:"Ramirez",        razon_social:"Roger cer srl",                       cuit:"30711144443",    email:"oficinaramirezgsm@gmail.com",       telefono:"3725403217",        rubro:"Construcción y Ferretería",                               comentarios:"Local físico y tienda online, minorista y mayorista.",                                                    messageId:"19d2fc9028f7c876" },
+  { fecha:"2026-03-26", nombre:"Fernando Francisco",     apellido:"Coronel",        razon_social:"GINSA SA",                            cuit:"30636666676",    email:"fcoronel@ch2g.com.ar",              telefono:"0379154618012",     rubro:"Administrativo compras",                                  comentarios:"Cocina industrial, campana acero inoxidable, anafe quemador industrial.",                                 messageId:"19d2aa48a1d1ea88" },
+  { fecha:"2026-03-25", nombre:"Emilio Santiago",        apellido:"Espeche Acosta", razon_social:"Ecoled srl",                          cuit:"30719198860",    email:"santy_espeche@hotmail.com",         telefono:"3834014959",        rubro:"Ferretería",                                              comentarios:"Somos distribuidores de artículos ferreteros.",                                                           messageId:"19d2509a6ac1794c" },
+  { fecha:"2026-03-25", nombre:"Natali",                 apellido:"",               razon_social:"Sanitarios PaDo",                     cuit:"27321678179",    email:"sanitariospado@gmail.com",          telefono:"1136352290",        rubro:"Venta de insumos de plomería y gas",                      comentarios:"Quiere vender sus productos.",                                                                            messageId:"19d2504874555e67" },
+  { fecha:"2026-03-25", nombre:"María Gianina",          apellido:"Pérez",          razon_social:"Russo Pérez SAS",                     cuit:"30716551861",    email:"gianina_perez@yahoo.com.ar",        telefono:"02604302106",       rubro:"Regalero",                                                comentarios:"Expo Presentes, quiere incorporar sus productos.",                                                        messageId:"19d2312c1d0984b7" },
+  { fecha:"2026-03-20", nombre:"Bautista",               apellido:"Bugnon",         razon_social:"Bugnon bautista",                     cuit:"20-47768729-7",  email:"davorsantafe@gmail.com",            telefono:"3425261035",        rubro:"Ferretería",                                              comentarios:"",                                                                                                        messageId:"19d0b2bf22c2b95e" },
+  { fecha:"2026-03-20", nombre:"Manuel",                 apellido:"",               razon_social:"Joacin",                              cuit:"30690750186",    email:"deazevedoloureiromanuel@gmail.com", telefono:"1180590940",        rubro:"Artículos del hogar y camping",                           comentarios:"",                                                                                                        messageId:"19d0b1a73ecd37f7" },
+  { fecha:"2026-03-19", nombre:"Oscar Daniel",           apellido:"González",       razon_social:"INSUMOS ODG",                         cuit:"20352277860",    email:"insumosodg@gmail.com",              telefono:"1131674501",        rubro:"Distribuidor",                                            comentarios:"",                                                                                                        messageId:"19d065156a580a4e" },
+  { fecha:"2026-03-19", nombre:"Carlos",                 apellido:"Cafferata",      razon_social:"CEC SA",                              cuit:"30619256634",    email:"cafferata@cecsa.com.ar",            telefono:"1144730562",        rubro:"Supermercados",                                           comentarios:"Interesado en gas para encendedores. Precio y compras mínimas.",                                          messageId:"19d04a24fa207bff" }
+];
+
+// ══════════════════════════════════════════════════════════════
+//  VENDEDORES
+// ══════════════════════════════════════════════════════════════
+const VENDEDORES = [
+  { nombre:"ABAT NICOLAS",              tel:"1131110000", mail:"nicolas.abat@brogas.com" },
+  { nombre:"ARENTSEN PAULA INGRID",     tel:"1164686000", mail:"corporativas@brogas.com" },
+  { nombre:"BARRERAS VICTOR",           tel:"1162457000", mail:"victorbarreras@brogas.com" },
+  { nombre:"BELEN GASTON ANDRES",       tel:"",           mail:"gbelen@brogas.com" },
+  { nombre:"CARPENA CLAUDIO",           tel:"1154727000", mail:"ventas5@brogas.com" },
+  { nombre:"DALLI FERNANDO",            tel:"1151126000", mail:"fer8572005@yahoo.com.ar" },
+  { nombre:"JOSE MARIA FERREYRA",       tel:"1178597000", mail:"jose.ferreyra@brogas.com" },
+  { nombre:"GUTVAY DIEGO GASTON",       tel:"1178597000", mail:"diego.gutvay@brogas.com" },
+  { nombre:"LONGO ELIA LUCA",           tel:"1131161000", mail:"luca.longo@brogas.com" },
+  { nombre:"MUÑOZ FOSSATI JUAN MARTIN", tel:"1178597000", mail:"juan.munoz@brogas.com" },
+  { nombre:"ORZECHOVSKI NICOLAS",       tel:"1171915000", mail:"nicolas.orse@brogas.com" },
+  { nombre:"ZANIER ROMINA",             tel:"1154726000", mail:"rominaz@brogas.com" }
+];
+
+const BA_ROTATION   = ["CARPENA CLAUDIO","DALLI FERNANDO","GUTVAY DIEGO GASTON","ORZECHOVSKI NICOLAS","ARENTSEN PAULA INGRID"];
+const CABA_ROTATION = ["BELEN GASTON ANDRES","LONGO ELIA LUCA","ARENTSEN PAULA INGRID"];
+
+const PROV_VEND = {
+  "SANTA FE":"ABAT NICOLAS","CORDOBA":"ABAT NICOLAS",
+  "ENTRE RIOS":"BARRERAS VICTOR","CHACO":"BARRERAS VICTOR","CORRIENTES":"BARRERAS VICTOR",
+  "MISIONES":"BARRERAS VICTOR","FORMOSA":"BARRERAS VICTOR",
+  "TUCUMAN":"JOSE MARIA FERREYRA","SALTA":"JOSE MARIA FERREYRA","JUJUY":"JOSE MARIA FERREYRA",
+  "CATAMARCA":"JOSE MARIA FERREYRA","SANTIAGO DEL ESTERO":"JOSE MARIA FERREYRA",
+  "MENDOZA":"MUÑOZ FOSSATI JUAN MARTIN","SAN JUAN":"MUÑOZ FOSSATI JUAN MARTIN",
+  "SAN LUIS":"MUÑOZ FOSSATI JUAN MARTIN","LA RIOJA":"MUÑOZ FOSSATI JUAN MARTIN",
+  "NEUQUEN":"CARPENA CLAUDIO","RIO NEGRO":"CARPENA CLAUDIO","CHUBUT":"CARPENA CLAUDIO",
+  "SANTA CRUZ":"CARPENA CLAUDIO","TIERRA DEL FUEGO":"CARPENA CLAUDIO","LA PAMPA":"CARPENA CLAUDIO"
+};
+
+const PROV_MAP = {
+  "11":"CAPITAL FEDERAL","15":"BUENOS AIRES",
+  "220":"BUENOS AIRES","221":"BUENOS AIRES","223":"BUENOS AIRES","224":"BUENOS AIRES","225":"BUENOS AIRES",
+  "226":"BUENOS AIRES","227":"BUENOS AIRES","228":"BUENOS AIRES","229":"BUENOS AIRES","230":"BUENOS AIRES",
+  "231":"BUENOS AIRES","232":"BUENOS AIRES","234":"BUENOS AIRES","236":"BUENOS AIRES","237":"BUENOS AIRES",
+  "238":"BUENOS AIRES","241":"BUENOS AIRES","242":"BUENOS AIRES","243":"BUENOS AIRES","244":"BUENOS AIRES",
+  "245":"BUENOS AIRES","246":"BUENOS AIRES","247":"BUENOS AIRES","249":"BUENOS AIRES","252":"BUENOS AIRES",
+  "257":"BUENOS AIRES","291":"BUENOS AIRES","292":"BUENOS AIRES","2921":"BUENOS AIRES","3489":"BUENOS AIRES",
+  "261":"MENDOZA","260":"MENDOZA","262":"MENDOZA","263":"MENDOZA",
+  "264":"SAN JUAN","266":"SAN LUIS","265":"SAN LUIS",
+  "280":"CHUBUT","281":"CHUBUT","297":"CHUBUT",
+  "293":"RIO NEGRO","294":"RIO NEGRO","298":"RIO NEGRO","2920":"RIO NEGRO",
+  "299":"NEUQUEN","296":"NEUQUEN",
+  "2901":"TIERRA DEL FUEGO","2902":"SANTA CRUZ","2903":"SANTA CRUZ",
+  "2926":"LA PAMPA","2925":"LA PAMPA","2302":"LA PAMPA","2954":"LA PAMPA",
+  "341":"SANTA FE","342":"SANTA FE","346":"SANTA FE","348":"SANTA FE","349":"SANTA FE",
+  "3400":"SANTA FE","3401":"SANTA FE","3402":"SANTA FE","3404":"SANTA FE","3405":"SANTA FE",
+  "3406":"SANTA FE","3407":"SANTA FE","3408":"SANTA FE","3409":"SANTA FE","3460":"SANTA FE",
+  "3462":"SANTA FE","3463":"SANTA FE","3464":"SANTA FE","3465":"SANTA FE","3466":"SANTA FE",
+  "3467":"SANTA FE","3468":"SANTA FE","3469":"SANTA FE","3471":"SANTA FE","3472":"SANTA FE",
+  "3476":"SANTA FE","3482":"SANTA FE","3483":"SANTA FE","3491":"SANTA FE","3492":"SANTA FE",
+  "3493":"SANTA FE","3496":"SANTA FE","3497":"SANTA FE","3498":"SANTA FE","3564":"SANTA FE","3576":"SANTA FE",
+  "343":"ENTRE RIOS","344":"ENTRE RIOS","345":"ENTRE RIOS",
+  "3435":"ENTRE RIOS","3436":"ENTRE RIOS","3437":"ENTRE RIOS","3438":"ENTRE RIOS","3442":"ENTRE RIOS",
+  "3444":"ENTRE RIOS","3445":"ENTRE RIOS","3446":"ENTRE RIOS","3447":"ENTRE RIOS","3448":"ENTRE RIOS",
+  "3454":"ENTRE RIOS","3455":"ENTRE RIOS","3456":"ENTRE RIOS",
+  "351":"CORDOBA","352":"CORDOBA","353":"CORDOBA","354":"CORDOBA","356":"CORDOBA","358":"CORDOBA",
+  "3521":"CORDOBA","3522":"CORDOBA","3524":"CORDOBA","3525":"CORDOBA","3532":"CORDOBA","3533":"CORDOBA",
+  "3537":"CORDOBA","3541":"CORDOBA","3543":"CORDOBA","3544":"CORDOBA","3546":"CORDOBA","3547":"CORDOBA",
+  "3548":"CORDOBA","3549":"CORDOBA","3562":"CORDOBA","3563":"CORDOBA","3571":"CORDOBA","3572":"CORDOBA",
+  "3573":"CORDOBA","3574":"CORDOBA","3583":"CORDOBA","3584":"CORDOBA","3585":"CORDOBA",
+  "362":"CHACO","364":"CHACO","3721":"CHACO","3725":"CHACO","3731":"CHACO","3734":"CHACO","3735":"CHACO",
+  "370":"FORMOSA","3711":"FORMOSA","3715":"FORMOSA","3716":"FORMOSA","3718":"FORMOSA",
+  "371":"CORRIENTES","379":"CORRIENTES","377":"CORRIENTES",
+  "3772":"CORRIENTES","3773":"CORRIENTES","3774":"CORRIENTES","3775":"CORRIENTES",
+  "3777":"CORRIENTES","3781":"CORRIENTES","3782":"CORRIENTES","3783":"CORRIENTES","3786":"CORRIENTES",
+  "376":"MISIONES","375":"MISIONES","3741":"MISIONES","3743":"MISIONES","3751":"MISIONES",
+  "3752":"MISIONES","3753":"MISIONES","3754":"MISIONES","3755":"MISIONES","3756":"MISIONES",
+  "3757":"MISIONES","3758":"MISIONES",
+  "380":"LA RIOJA","3821":"LA RIOJA","3825":"LA RIOJA","3826":"LA RIOJA","3827":"LA RIOJA",
+  "381":"TUCUMAN","382":"TUCUMAN","3841":"TUCUMAN","3843":"TUCUMAN","3844":"TUCUMAN",
+  "3845":"TUCUMAN","3846":"TUCUMAN","3863":"TUCUMAN","3865":"TUCUMAN","3869":"TUCUMAN",
+  "3891":"TUCUMAN","3892":"TUCUMAN","3894":"TUCUMAN",
+  "383":"CATAMARCA","3832":"CATAMARCA","3834":"CATAMARCA","3835":"CATAMARCA","3837":"CATAMARCA","3838":"CATAMARCA",
+  "385":"SANTIAGO DEL ESTERO","3854":"SANTIAGO DEL ESTERO","3855":"SANTIAGO DEL ESTERO",
+  "3856":"SANTIAGO DEL ESTERO","3857":"SANTIAGO DEL ESTERO","3858":"SANTIAGO DEL ESTERO",
+  "3861":"SANTIAGO DEL ESTERO","3862":"SANTIAGO DEL ESTERO",
+  "387":"SALTA","3867":"SALTA","3868":"SALTA","3873":"SALTA","3875":"SALTA","3876":"SALTA","3877":"SALTA","3878":"SALTA",
+  "388":"JUJUY","3884":"JUJUY","3885":"JUJUY","3886":"JUJUY","3887":"JUJUY"
+};
+
+// ══════════════════════════════════════════════════════════════
+//  ESTADOS AUTOMÁTICOS (actualizados por la tarea programada)
+//  El sistema escribe acá cuando envía WPP al vendedor.
+//  Tiene prioridad sobre cualquier valor en localStorage.
+// ══════════════════════════════════════════════════════════════
+const AUTO_ESTADO = {
+  "19d6cfcb5b9c1e57": "enviado",
+  "19d69bf585aefc37": "enviado"
+};
+
+// ══════════════════════════════════════════════════════════════
+//  ESTADO PERSISTENTE (localStorage con fallback seguro)
+// ══════════════════════════════════════════════════════════════
+function lsGet(key, def) {
+  try { return JSON.parse(localStorage.getItem(key) || def); }
+  catch(e) { return JSON.parse(def); }
+}
+function lsSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+let leadEstado       = lsGet('brg_estado',   '{}');
+let vendedorOverrides= lsGet('brg_vendedor', '{}');
+let conversionData   = lsGet('brg_conv',     '{}');
+
+function save() {
+  lsSet('brg_estado',   leadEstado);
+  lsSet('brg_vendedor', vendedorOverrides);
+  lsSet('brg_conv',     conversionData);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  HELPERS  (todos null-safe con || '')
+// ══════════════════════════════════════════════════════════════
+function s(v){ return (v || ''); }  // safe string
+
+function cleanTel(t){ return s(t).replace(/[\s\-\(\)\.�]/g,''); }
+
+function getProv(tel) {
+  let c = cleanTel(tel);
+  if (c.startsWith("549")) c = c.slice(3);
+  else if (c.startsWith("54")) c = c.slice(2);
+  if (c.startsWith("0")) c = c.slice(1);
+  for (let l = 4; l >= 2; l--) {
+    const k = c.slice(0, l);
+    if (PROV_MAP[k]) return PROV_MAP[k];
+  }
+  return "SIN DATOS";
+}
+
+function getDefaultVendName(lead) {
+  const prov = getProv(lead.telefono);
+  const idx  = leads.indexOf(lead);
+  if (prov === "BUENOS AIRES")    return BA_ROTATION[idx % BA_ROTATION.length];
+  if (prov === "CAPITAL FEDERAL") return CABA_ROTATION[idx % CABA_ROTATION.length];
+  return PROV_VEND[prov] || "ARENTSEN PAULA INGRID";
+}
+
+function getVend(lead) {
+  const name = vendedorOverrides[lead.messageId] || getDefaultVendName(lead);
+  return VENDEDORES.find(v => v.nombre === name) || VENDEDORES[1];
+}
+
+function getEstado(mid) { return AUTO_ESTADO[mid] || leadEstado[mid] || 'nuevo'; }
+
+function fmtPeso(n) { return (n != null && n !== '') ? '$' + Number(n).toLocaleString('es-AR') : 'Sin monto'; }
+
+function buildVendorMsg(lead, vend) {
+  const nom = [lead.nombre, lead.apellido].filter(Boolean).join(' ');
+  const lines = [
+    `Hola ${vend.nombre.split(' ')[0]}, te paso los datos de un cliente que se contactó a través de la web mayorista de Brogas:`,
+    ``,
+    `👤 Nombre: ${s(nom)}`,
+    `🏢 Razón Social: ${s(lead.razon_social)}`,
+    `🔢 CUIT: ${s(lead.cuit)}`,
+    `📞 Tel: ${s(lead.telefono)}`,
+    `📧 Email: ${s(lead.email)}`,
+    `🏷️ Rubro: ${s(lead.rubro)}`
+  ];
+  if (lead.comentarios) lines.push(`💬 Comentarios: ${lead.comentarios}`);
+  lines.push(``, `¡Por favor ponete en contacto a la brevedad! 🙌`);
+  return lines.join('\n');
+}
+
+function toast(t) {
+  const e = document.getElementById('toast');
+  e.textContent = t;
+  e.classList.add('show');
+  setTimeout(() => e.classList.remove('show'), 2800);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  WORKFLOW ACTIONS
+// ══════════════════════════════════════════════════════════════
+function enviarVendedor(mid) {
+  leadEstado[mid] = 'enviado';
+  save();
+  applyFilters();
+  toast('📤 Enviado al vendedor · pasó a "Enviados"');
+}
+
+function vendedorContacto(mid) {
+  leadEstado[mid] = 'seguimiento';
+  save();
+  applyFilters();
+  toast('📞 Marcado: el vendedor se contactó · pasó a "Seguimiento"');
+}
+
+function changeVend(sel, mid) {
+  const lead = leads.find(l => l.messageId === mid);
+  if (sel.value === getDefaultVendName(lead)) {
+    delete vendedorOverrides[mid];
+    sel.classList.remove('ov');
+  } else {
+    vendedorOverrides[mid] = sel.value;
+    sel.classList.add('ov');
+  }
+  save();
+  toast('Vendedor reasignado → ' + sel.value);
+}
+
+function copyMsg(btn, mid) {
+  const lead = leads.find(l => l.messageId === mid);
+  const msg  = buildVendorMsg(lead, getVend(lead));
+  const markCopied = () => {
+    btn.classList.add('copied'); btn.innerHTML = '✓ Copiado';
+    toast('Mensaje para el vendedor copiado ✓');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '📋 Mensaje'; }, 2200);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(msg).then(markCopied).catch(() => fallbackCopy(msg, markCopied));
+  } else {
+    fallbackCopy(msg, markCopied);
+  }
+}
+
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  cb();
+}
+
+// ── Modal conversión ──────────────────────────────────────────
+let _mid = null;
+function openModal(mid) {
+  _mid = mid;
+  const lead = leads.find(l => l.messageId === mid);
+  document.getElementById('modalSub').textContent =
+    [lead.nombre, lead.apellido].filter(Boolean).join(' ') + ' · ' + s(lead.razon_social);
+  document.getElementById('inMonto').value = conversionData[mid] ? conversionData[mid].monto : '';
+  document.getElementById('inFecha').value = conversionData[mid] ? conversionData[mid].fecha  : new Date().toISOString().split('T')[0];
+  document.getElementById('convModal').classList.add('open');
+}
+function closeModal() { document.getElementById('convModal').classList.remove('open'); _mid = null; }
+function confirmConv() {
+  if (!_mid) return;
+  conversionData[_mid] = {
+    monto: document.getElementById('inMonto').value,
+    fecha: document.getElementById('inFecha').value
+  };
+  leadEstado[_mid] = 'convertido';
+  save(); closeModal(); applyFilters();
+  toast('🏆 Conversión registrada');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════════════════════
+let currentTab = 'nuevos';
+function switchTab(t) {
+  currentTab = t;
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + t).classList.add('active');
+  applyFilters();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════════════════════
+const HEADS = {
+  nuevos:      ['Acción','Estado','Fecha','Apellido / Nombre','Razón Social','CUIT','Email','Teléfono','Rubro','Provincia','Vendedor','Comentarios','Contacto vendedor'],
+  enviados:    ['Acción','Estado','Fecha','Apellido / Nombre','Razón Social','CUIT','Email','Teléfono','Rubro','Provincia','Vendedor','Comentarios','Contacto vendedor'],
+  seguimiento: ['Acción','Estado','Fecha','Apellido / Nombre','Razón Social','CUIT','Email','Teléfono','Rubro','Provincia','Vendedor','Conversión','Comentarios','Contacto vendedor']
+};
+const BADGE_META = {
+  nuevo:       ['b-nuevo',       '0��� Nuevo'],
+  enviado:     ['b-enviado',     '📤 Enviado'],
+  seguimiento: ['b-seguimiento', '📞 Seguimiento'],
+  convertido:  ['b-convertido',  '🏆 Convertido']
+};
+
+function renderTable(data) {
+  document.getElementById('thead').innerHTML = HEADS[currentTab].map(h => `<th>${h}</th>`).join('');
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+
+  if (!data.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="${HEADS[currentTab].length}"><div class="empty"><div class="ico">📭</div><p>No hay leads en esta sección</p></div></td>`;
+    tbody.appendChild(tr);
+    updateStats();
+    return;
+  }
+
+  data.forEach(lead => {
+    const mid    = lead.messageId;
+    const estado = getEstado(mid);
+    const prov   = getProv(lead.telefono);
+    const vend   = getVend(lead);
+    const over   = !!vendedorOverrides[mid];
+    const [bc, bl] = BADGE_META[estado] || BADGE_META.nuevo;
+
+    const vOpts = VENDEDORES.map(v =>
+      `<option value="${v.nombre}"${v.nombre === vend.nombre ? ' selected' : ''}>${v.nombre}</option>`
+    ).join('');
+
+    const vPhone  = vend.tel ? '54' + vend.tel : '';
+    const vMsgEnc = encodeURIComponent(buildVendorMsg(lead, vend));
+    const wppLink = vPhone
+      ? `https://wa.me/${vPhone}?text=${vMsgEnc}`
+      : `https://wa.me/?text=${vMsgEnc}`;
+
+    // First column: workflow action button
+    let actionBtn = '';
+    if      (estado === 'nuevo')       actionBtn = `<button class="btn btn-enviar"   onclick="enviarVendedor('${mid}')">📤 Enviar a vendedor</button>`;
+    else if (estado === 'enviado')     actionBtn = `<button class="btn btn-contacto" onclick="vendedorContacto('${mid}')">📞 Vendedor se contactó</button>`;
+    else if (estado === 'seguimiento') actionBtn = `<button class="btn btn-conv"     onclick="openModal('${mid}')">🏆 Convirtió</button>`;
+    else if (estado === 'convertido')  actionBtn = `<button class="btn btn-edit"     onclick="openModal('${mid}')">✏️ Editar conversión</button>`;
+
+    // Conversion column (seguimiento tab only)
+    let convCol = '';
+    if (currentTab === 'seguimiento') {
+      const cd = conversionData[mid];
+      convCol = (estado === 'convertido' && cd)
+        ? `<td><div class="cv-monto">${fmtPeso(cd.monto)}</div><div class="cv-fecha">📅 ${cd.fecha || '—'}</div></td>`
+        : `<td><span style="color:#ccc;font-size:11px">— pendiente</span></td>`;
+    }
+
+    const coment = s(lead.comentarios).replace(/"/g, '&quot;');
+    const tr = document.createElement('tr');
+    if (estado === 'convertido') tr.classList.add('row-conv');
+    tr.innerHTML = `
+      <td class="action-col">${actionBtn}</td>
+      <td><span class="badge ${bc}">${bl}</span></td>
+      <td style="white-space:nowrap">${s(lead.fecha)}</td>
+      <td><div class="ap">${s(lead.apellido) || '—'}</div><div class="nm">${s(lead.nombre)}</div></td>
+      <td><strong>${s(lead.razon_social) || '—'}</strong></td>
+      <td style="font-family:monospace;font-size:11.5px">${s(lead.cuit) || '—'}</td>
+      <td><a href="mailto:${s(lead.email)}" style="color:#1d4ed8;font-size:11.5px">${s(lead.email) || '—'}</a></td>
+      <td style="white-space:nowrap">${s(lead.telefono) || '—'}</td>
+      <td style="font-size:12px">${s(lead.rubro) || '—'}</td>
+      <td><span class="badge b-prov">${prov}</span></td>
+      <td>
+        <select class="sel-vend${over ? ' ov' : ''}" onchange="changeVend(this,'${mid}')">
+          ${vOpts}
+        </select>
+        ${over ? '<div class="ov-label">✏️ Reasignado manualmente</div>' : ''}
+      </td>
+      ${convCol}
+      <td class="cc" title="${coment}">${s(lead.comentarios) || '—'}</td>
+      <td>
+        <div class="actions">
+          <button class="btn btn-copy" onclick="copyMsg(this,'${mid}')">📋 Mensaje</button>
+          <a class="btn btn-wpp" href="${wppLink}" target="_blank">💬 WPP</a>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  updateStats();
+}
+
+function updateStats() {
+  const cnt = st => leads.filter(l => getEstado(l.messageId) === st).length;
+  const n = cnt('nuevo'), en = cnt('enviado'), seg = cnt('seguimiento'), conv = cnt('convertido');
+  document.getElementById('sTotal').textContent         = leads.length;
+  document.getElementById('sNuevos').textContent        = n;
+  document.getElementById('sEnviados').textContent      = en;
+  document.getElementById('sSeg').textContent           = seg + conv;
+  document.getElementById('sConv').textContent          = conv;
+  document.getElementById('cnt-nuevos').textContent     = n;
+  document.getElementById('cnt-enviados').textContent   = en;
+  document.getElementById('cnt-seguimiento').textContent= seg + conv;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  FILTROS  (todos los campos con s() para evitar null errors)
+// ══════════════════════════════════════════════════════════════
+function tabLeads() {
+  if (currentTab === 'nuevos')      return leads.filter(l => getEstado(l.messageId) === 'nuevo');
+  if (currentTab === 'enviados')    return leads.filter(l => getEstado(l.messageId) === 'enviado');
+  if (currentTab === 'seguimiento') return leads.filter(l => ['seguimiento','convertido'].includes(getEstado(l.messageId)));
+  return leads;
+}
+
+function applyFilters() {
+  const q  = s(document.getElementById('searchInput').value).toLowerCase();
+  const fV = document.getElementById('filterVendedor').value;
+  const fP = document.getElementById('filterProvincia').value;
+  const fR = document.getElementById('filterRubro').value;
+
+  const out = tabLeads().filter(lead => {
+    const p = getProv(lead.telefono);
+    const v = getVend(lead).nombre;
+    const hayMatch = !q ||
+      (s(lead.nombre) + ' ' + s(lead.apellido)).toLowerCase().includes(q) ||
+      s(lead.razon_social).toLowerCase().includes(q)  ||
+      s(lead.cuit).toLowerCase().includes(q)          ||
+      s(lead.email).toLowerCase().includes(q)         ||
+      s(lead.telefono).includes(q)                    ||
+      p.toLowerCase().includes(q)                     ||
+      s(lead.rubro).toLowerCase().includes(q);
+    return hayMatch && (!fV || v === fV) && (!fP || p === fP) && (!fR || lead.rubro === fR);
+  });
+
+  renderTable(out);
+}
+
+function populateFilters() {
+  const provs  = [...new Set(leads.map(l => getProv(l.telefono)))].sort();
+  const rubros = [...new Set(leads.map(l => s(l.rubro)).filter(Boolean))].sort();
+  const fp = document.getElementById('filterProvincia');
+  provs.forEach(p => { fp.innerHTML += `<option value="${p}">${p}</option>`; });
+  const fv = document.getElementById('filterVendedor');
+  VENDEDORES.forEach(v => { fv.innerHTML += `<option value="${v.nombre}">${v.nombre}</option>`; });
+  const fr = document.getElementById('filterRubro');
+  rubros.forEach(r => { fr.innerHTML += `<option value="${r}">${r}</option>`; });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════════
+['searchInput','filterVendedor','filterProvincia','filterRubro'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input',  applyFilters);
+  el.addEventListener('change', applyFilters);
+});
+document.getElementById('convModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+
+populateFilters();
+applyFilters();
+document.getElementById('updateInfo').textContent =
+  'Última actualización: ' + new Date().toLocaleString('es-AR', { timeZone:'America/Argentina/Buenos_Aires' });
+</script>
+</body>
+</html>
