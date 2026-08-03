@@ -156,6 +156,8 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-08-02", nombre:"Belen",                apellido:"Lopez",          razon_social:"Indumentariamax",                     cuit:"27365409272",    email:"agusbel.bl@gmail.com",              telefono:"3875543492",        rubro:"Artículos de camping",                                    comentarios:"⚠️ RECLAMO (2do contacto): vende por mayor y menor, necesita lista de precios. Un vendedor se contactó ofreciéndole zona Salta, pero la clienta está en Córdoba Capital. El tel. tiene código de área 387 (Salta) por eso el ruteo automático la asignó mal — verificar reasignación manual a vendedor de Córdoba (Abat Nicolas). Respuesta enviada como borrador en Gmail.", messageId:"19fc4f0b9029819f" },
+  { fecha:"2026-08-02", nombre:"Franco",               apellido:"Ferrari",        razon_social:"Franferrari sas",                     cuit:"30-71923220-1",  email:"ferrarifrancogerman@gmail.com",     telefono:"3513410315",        rubro:"Ferretería",                                              comentarios:"Ferretería en Malagueño, Córdoba, atiende al público hace 4 meses. Ya comercializa productos Brogas vía distribuidores; quiere sumar más productos de la línea comprando directo.", messageId:"19fc2804deaf1c79" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
@@ -305,7 +307,7 @@ function save() {
 // ══════════════════════════════════════════════════════════════
 function s(v){ return (v || ''); }  // safe string
 
-function cleanTel(t){ return s(t).replace(/[\s\-\(\)\.�]/g,''); }
+function cleanTel(t){ return s(t).replace(/[\s\-\(\)\.�]/g,''); }
 
 function getProv(tel) {
   let c = cleanTel(tel);
@@ -457,7 +459,7 @@ const HEADS = {
   seguimiento: ['Acción','Estado','Fecha','Apellido / Nombre','Razón Social','CUIT','Email','Teléfono','Rubro','Provincia','Vendedor','Conversión','Comentarios','Contacto vendedor']
 };
 const BADGE_META = {
-  nuevo:       ['b-nuevo',       '0��� Nuevo'],
+  nuevo:       ['b-nuevo',       '0��� Nuevo'],
   enviado:     ['b-enviado',     '📤 Enviado'],
   seguimiento: ['b-seguimiento', '📞 Seguimiento'],
   convertido:  ['b-convertido',  '🏆 Convertido']
