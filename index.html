@@ -204,33 +204,55 @@ const leads = [
 //  VENDEDORES
 // ══════════════════════════════════════════════════════════════
 const VENDEDORES = [
-  { nombre:"ABAT NICOLAS",              tel:"1131110000", mail:"nicolas.abat@brogas.com" },
-  { nombre:"ARENTSEN PAULA INGRID",     tel:"1164686000", mail:"corporativas@brogas.com" },
-  { nombre:"BARRERAS VICTOR",           tel:"1162457000", mail:"victorbarreras@brogas.com" },
-  { nombre:"BELEN GASTON ANDRES",       tel:"",           mail:"gbelen@brogas.com" },
-  { nombre:"CARPENA CLAUDIO",           tel:"1154727000", mail:"ventas5@brogas.com" },
-  { nombre:"DALLI FERNANDO",            tel:"1151126000", mail:"fer8572005@yahoo.com.ar" },
-  { nombre:"JOSE MARIA FERREYRA",       tel:"1178597000", mail:"jose.ferreyra@brogas.com" },
-  { nombre:"GUTVAY DIEGO GASTON",       tel:"1178597000", mail:"diego.gutvay@brogas.com" },
-  { nombre:"LONGO ELIA LUCA",           tel:"1131161000", mail:"luca.longo@brogas.com" },
-  { nombre:"MUÑOZ FOSSATI JUAN MARTIN", tel:"1178597000", mail:"juan.munoz@brogas.com" },
-  { nombre:"ORZECHOVSKI NICOLAS",       tel:"1171915000", mail:"nicolas.orse@brogas.com" },
-  { nombre:"ZANIER ROMINA",             tel:"1154726000", mail:"rominaz@brogas.com" }
+  { nombre:"LONGO ELIA LUCA",           tel:"1131161000", mail:"luca.longo@brogas.com",    zona:"Capital Federal" },
+  { nombre:"SUAREZ CLAUDIO",            tel:"",           mail:"",                         zona:"GBA Zona Norte y Oeste" },
+  { nombre:"ORZECHOVSKI NICOLAS",       tel:"1171915000", mail:"nicolas.orse@brogas.com",  zona:"GBA Zona Sur + La Plata" },
+  { nombre:"GUTVAY DIEGO GASTON",       tel:"1178597000", mail:"diego.gutvay@brogas.com",  zona:"Costa Atlantica bonaerense" },
+  { nombre:"CARPENA CLAUDIO",           tel:"1154727000", mail:"ventas5@brogas.com",       zona:"Bahia Blanca (solo Distribuidores)" },
+  { nombre:"ABAT NICOLAS",              tel:"1131110000", mail:"nicolas.abat@brogas.com",  zona:"Santa Fe" },
+  { nombre:"MATIAS GAUNA",              tel:"",           mail:"",                         zona:"Cordoba" },
+  { nombre:"MUÑOZ FOSSATI JUAN MARTIN", tel:"1178597000", mail:"juan.munoz@brogas.com",    zona:"Mendoza, San Juan, San Luis" },
+  { nombre:"JOSE MARIA FERREYRA",       tel:"1178597000", mail:"jose.ferreyra@brogas.com", zona:"Tucuman, Salta, Jujuy" },
+  { nombre:"BURGOS NESTOR",             tel:"",           mail:"",                         zona:"Neuquen y Rio Negro" },
+  { nombre:"ARENTSEN PAULA INGRID",     tel:"1164686000", mail:"corporativas@brogas.com",  zona:"Resto del pais / Corporativo" },
+  { nombre:"ZANIER ROMINA",             tel:"1154726000", mail:"rominaz@brogas.com",       zona:"Resto del pais / Corporativo" }
 ];
 
-const BA_ROTATION   = ["CARPENA CLAUDIO","DALLI FERNANDO","GUTVAY DIEGO GASTON","ORZECHOVSKI NICOLAS","ARENTSEN PAULA INGRID"];
-const CABA_ROTATION = ["BELEN GASTON ANDRES","LONGO ELIA LUCA","ARENTSEN PAULA INGRID"];
+// Criterio 4: reparto equitativo, alternando uno y uno.
+const EQUITATIVO = ["ARENTSEN PAULA INGRID","ZANIER ROMINA"];
 
+// ══════════════════════════════════════════════════════════════
+//  CRITERIO 1 — MAPA DE ZONAS POR LOCALIDAD
+//  Claves ya normalizadas: MAYUSCULAS, sin acentos ni puntos.
+// ══════════════════════════════════════════════════════════════
+const LOC_CABA = ["CABA","CAPITAL FEDERAL","CIUDAD AUTONOMA DE BUENOS AIRES","AGRONOMIA","ALMAGRO","BALVANERA","BARRACAS","BELGRANO","BOEDO","CABALLITO","CHACARITA","COGHLAN","COLEGIALES","CONSTITUCION","FLORES","FLORESTA","LA BOCA","LA PATERNAL","LINIERS","MATADEROS","MONSERRAT","MONTE CASTRO","NUEVA POMPEYA","NUÑEZ","PALERMO","PARQUE AVELLANEDA","PARQUE CHACABUCO","PARQUE CHAS","PARQUE PATRICIOS","PUERTO MADERO","RECOLETA","RETIRO","SAAVEDRA","SAN CRISTOBAL","SAN NICOLAS","SAN TELMO","VELEZ SARSFIELD","VERSALLES","VILLA CRESPO","VILLA DEL PARQUE","VILLA DEVOTO","VILLA GRAL MITRE","VILLA LUGANO","VILLA LURO","VILLA ORTUZAR","VILLA PUEYRREDON","VILLA REAL","VILLA RIACHUELO","VILLA SANTA RITA","VILLA SOLDATI","VILLA URQUIZA"];
+
+const LOC_GBA_NO = ["VICENTE LOPEZ","OLIVOS","FLORIDA","MARTINEZ","SAN ISIDRO","BECCAR","ACASSUSO","BOULOGNE","SAN FERNANDO","TIGRE","DON TORCUATO","GENERAL PACHECO","NORDELTA","ESCOBAR","BELEN DE ESCOBAR","GARIN","PILAR","DEL VISO","MALVINAS ARGENTINAS","LOS POLVORINES","GRAND BOURG","TORTUGUITAS","SAN MIGUEL","BELLA VISTA","JOSE C PAZ","CAMPANA","ZARATE","SAN MARTIN","VILLA BALLESTER","JOSE LEON SUAREZ","TRES DE FEBRERO","CASEROS","SAENZ PEÑA","EL PALOMAR","HURLINGHAM","WILLIAM MORRIS","MORON","CASTELAR","ITUZAINGO","MERLO","SAN ANTONIO DE PADUA","LIBERTAD","MORENO","PASO DEL REY","GENERAL RODRIGUEZ","GRAL RODRIGUEZ","LUJAN","MARCOS PAZ","LA MATANZA","SAN JUSTO","RAMOS MEJIA","HAEDO","CIUDADELA","LOMAS DEL MIRADOR","GONZALEZ CATAN","GREGORIO DE LAFERRERE","LAFERRERE","ISIDRO CASANOVA","RAFAEL CASTILLO","VIRREY DEL PINO","TAPIALES","ALDO BONZI"];
+
+const LOC_GBA_SUR = ["AVELLANEDA","SARANDI","WILDE","DOCK SUD","LANUS","REMEDIOS DE ESCALADA","VALENTIN ALSINA","LOMAS DE ZAMORA","BANFIELD","TEMPERLEY","TURDERA","LLAVALLOL","ALMIRANTE BROWN","ADROGUE","BURZACO","LONGCHAMPS","GLEW","RAFAEL CALZADA","CLAYPOLE","SAN FRANCISCO SOLANO","QUILMES","BERNAL","EZPELETA","DON BOSCO","BERAZATEGUI","HUDSON","FLORENCIO VARELA","ESTEBAN ECHEVERRIA","MONTE GRANDE","LUIS GUILLON","EL JAGUEL","CANNING","EZEIZA","LA UNION","TRISTAN SUAREZ","CARLOS SPEGAZZINI","SAN VICENTE","ALEJANDRO KORN","PRESIDENTE PERON","GUERNICA","LA PLATA","BERISSO","ENSENADA","CITY BELL","GONNET","VILLA ELISA","TOLOSA"];
+
+const LOC_COSTA = ["MAR DEL PLATA","MIRAMAR","NECOCHEA","QUEQUEN","VILLA GESELL","PINAMAR","CARILO","OSTENDE","VALERIA DEL MAR","MAR DE AJO","SAN BERNARDO","SANTA TERESITA","MAR DEL TUYU","LAS TONINAS","SAN CLEMENTE DEL TUYU","LA COSTA","AGUAS VERDES","MAR DE LAS PAMPAS","CLAROMECO","MONTE HERMOSO"];
+
+const LOC_BAHIA = ["BAHIA BLANCA","INGENIERO WHITE","PUNTA ALTA"];
+
+const LOC_VEND = {};
+[[LOC_CABA,"LONGO ELIA LUCA"],[LOC_GBA_NO,"SUAREZ CLAUDIO"],[LOC_GBA_SUR,"ORZECHOVSKI NICOLAS"],
+ [LOC_COSTA,"GUTVAY DIEGO GASTON"]].forEach(([locs,v]) => locs.forEach(l => { LOC_VEND[l] = v; }));
+const SET_BAHIA = new Set(LOC_BAHIA);
+
+// ══════════════════════════════════════════════════════════════
+//  CRITERIO 2 — PROVINCIA
+//  BUENOS AIRES no figura: se resuelve por localidad. Las provincias
+//  sin vendedor dedicado caen al reparto equitativo (criterio 4).
+// ══════════════════════════════════════════════════════════════
 const PROV_VEND = {
-  "SANTA FE":"ABAT NICOLAS","CORDOBA":"ABAT NICOLAS",
-  "ENTRE RIOS":"BARRERAS VICTOR","CHACO":"BARRERAS VICTOR","CORRIENTES":"BARRERAS VICTOR",
-  "MISIONES":"BARRERAS VICTOR","FORMOSA":"BARRERAS VICTOR",
-  "TUCUMAN":"JOSE MARIA FERREYRA","SALTA":"JOSE MARIA FERREYRA","JUJUY":"JOSE MARIA FERREYRA",
-  "CATAMARCA":"JOSE MARIA FERREYRA","SANTIAGO DEL ESTERO":"JOSE MARIA FERREYRA",
+  "CAPITAL FEDERAL":"LONGO ELIA LUCA",
+  "SANTA FE":"ABAT NICOLAS",
+  "CORDOBA":"MATIAS GAUNA",
   "MENDOZA":"MUÑOZ FOSSATI JUAN MARTIN","SAN JUAN":"MUÑOZ FOSSATI JUAN MARTIN",
-  "SAN LUIS":"MUÑOZ FOSSATI JUAN MARTIN","LA RIOJA":"MUÑOZ FOSSATI JUAN MARTIN",
-  "NEUQUEN":"CARPENA CLAUDIO","RIO NEGRO":"CARPENA CLAUDIO","CHUBUT":"CARPENA CLAUDIO",
-  "SANTA CRUZ":"CARPENA CLAUDIO","TIERRA DEL FUEGO":"CARPENA CLAUDIO","LA PAMPA":"CARPENA CLAUDIO"
+  "SAN LUIS":"MUÑOZ FOSSATI JUAN MARTIN",
+  "TUCUMAN":"JOSE MARIA FERREYRA","SALTA":"JOSE MARIA FERREYRA","JUJUY":"JOSE MARIA FERREYRA",
+  "NEUQUEN":"BURGOS NESTOR","RIO NEGRO":"BURGOS NESTOR"
 };
 
 const PROV_MAP = {
@@ -339,7 +361,10 @@ function getProvTel(tel) {
 
 // Provincias válidas = las que tienen vendedor asignado, más las dos
 // jurisdicciones que se resuelven por rotación.
-const PROV_VALIDAS = new Set([...Object.keys(PROV_VEND), "BUENOS AIRES", "CAPITAL FEDERAL"]);
+const PROV_VALIDAS = new Set(["BUENOS AIRES","CAPITAL FEDERAL","CATAMARCA","CHACO","CHUBUT",
+  "CORDOBA","CORRIENTES","ENTRE RIOS","FORMOSA","JUJUY","LA PAMPA","LA RIOJA","MENDOZA","MISIONES",
+  "NEUQUEN","RIO NEGRO","SALTA","SAN JUAN","SAN LUIS","SANTA CRUZ","SANTA FE",
+  "SANTIAGO DEL ESTERO","TIERRA DEL FUEGO","TUCUMAN"]);
 
 const PROV_ALIAS = {
   "CABA":                            "CAPITAL FEDERAL",
@@ -354,13 +379,22 @@ const PROV_ALIAS = {
 // Normaliza el texto libre del formulario ("Río negro", "Cordoba",
 // "Ciudad Autónoma de Buenos Aires") a las claves de PROV_VEND.
 // Devuelve '' si no se reconoce, para poder caer al teléfono.
+function normTxt(v) {
+  return s(v).toUpperCase()
+             .normalize("NFD").replace(/[\u0300-\u036f]/g, '')
+             .replace(/\./g, '').replace(/\s+/g, ' ').trim();
+}
+
 function normProv(p) {
-  const t = s(p).toUpperCase()
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, '')
-                .replace(/\./g, '').replace(/\s+/g, ' ').trim();
+  const t = normTxt(p);
   if (!t) return '';
   const a = PROV_ALIAS[t] || t;
   return PROV_VALIDAS.has(a) ? a : '';
+}
+
+// Carpena atiende Bahia Blanca solo para Distribuidores.
+function esDistribuidor(lead) {
+  return /DISTRIBU|MAYORISTA|REVENT/.test(normTxt(s(lead.rubro)+' '+s(lead.comentarios)+' '+s(lead.razon_social)));
 }
 
 // La provincia declarada en el formulario manda; el teléfono es el fallback.
@@ -368,17 +402,58 @@ function getProv(lead) {
   return normProv(lead.provincia) || getProvTel(lead.telefono);
 }
 
-function getDefaultVendName(lead) {
-  const prov = getProv(lead);
-  const idx  = leads.indexOf(lead);
-  if (prov === "BUENOS AIRES")    return BA_ROTATION[idx % BA_ROTATION.length];
-  if (prov === "CAPITAL FEDERAL") return CABA_ROTATION[idx % CABA_ROTATION.length];
-  return PROV_VEND[prov] || "ARENTSEN PAULA INGRID";
+// ══════════════════════════════════════════════════════════════
+//  ASIGNACION AUTOMATICA — 4 criterios, se toma el primero que resuelve
+//    1) localidad  2) provincia  3) prefijo telefonico  4) equitativo
+// ══════════════════════════════════════════════════════════════
+function resolverLead(lead) {
+  // 1) Localidad
+  const loc = normTxt(lead.localidad);
+  if (loc) {
+    if (SET_BAHIA.has(loc)) {
+      if (esDistribuidor(lead)) return { vend:"CARPENA CLAUDIO", criterio:"localidad" };
+      // Bahia Blanca sin perfil distribuidor: sigue con los demas criterios.
+    } else if (LOC_VEND[loc]) {
+      return { vend: LOC_VEND[loc], criterio:"localidad" };
+    }
+  }
+  // 2) Provincia
+  const prov = normProv(lead.provincia);
+  if (prov && PROV_VEND[prov]) return { vend: PROV_VEND[prov], criterio:"provincia" };
+  // 3) Prefijo telefonico
+  const provTel = getProvTel(lead.telefono);
+  if (PROV_VEND[provTel]) return { vend: PROV_VEND[provTel], criterio:"telefono" };
+  // 4) Reparto equitativo (el vendedor lo define asignaciones(), por orden de llegada)
+  return { vend:null, criterio:"equitativo" };
 }
+
+// Se resuelve una sola vez sobre todo el padron, de mas viejo a mas nuevo,
+// para que el alternado del reparto equitativo sea estable y reproducible.
+let _asignCache = null;
+function asignaciones() {
+  if (_asignCache) return _asignCache;
+  _asignCache = new Map();
+  let eq = 0;
+  [...leads].reverse().forEach(lead => {
+    const r = resolverLead(lead);
+    if (r.criterio === "equitativo") { r.vend = EQUITATIVO[eq % EQUITATIVO.length]; eq++; }
+    _asignCache.set(lead.messageId, r);
+  });
+  return _asignCache;
+}
+
+function getAsignacion(lead) {
+  return asignaciones().get(lead.messageId) || { vend:"ARENTSEN PAULA INGRID", criterio:"equitativo" };
+}
+
+function getDefaultVendName(lead) { return getAsignacion(lead).vend; }
+
+// Si el override guardado apunta a un vendedor dado de baja, cae al corporativo.
+const VEND_FALLBACK = VENDEDORES.find(v => v.nombre === "ARENTSEN PAULA INGRID");
 
 function getVend(lead) {
   const name = vendedorOverrides[lead.messageId] || getDefaultVendName(lead);
-  return VENDEDORES.find(v => v.nombre === name) || VENDEDORES[1];
+  return VENDEDORES.find(v => v.nombre === name) || VEND_FALLBACK;
 }
 
 function getEstado(mid) { return AUTO_ESTADO[mid] || leadEstado[mid] || 'nuevo'; }
