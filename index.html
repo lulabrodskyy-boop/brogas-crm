@@ -156,6 +156,10 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-08-03", nombre:"Nicolás",              apellido:"Tardi",          razon_social:"Forraje Junin",                       cuit:"23393707909",    email:"nikoyfm@live.com",                  telefono:"3416719006",        rubro:"Bazar ferreteria",                                        comentarios:"Hola me interesa informacion",                                                                            messageId:"19fca3279c11e200" },
+  { fecha:"2026-08-03", nombre:"Adrian Franco",        apellido:"Pozzebon",       razon_social:"Grupo MO SAS",                        cuit:"30718324366",    email:"grupomo.mza@gmail.com",             telefono:"02617451067",       rubro:"Ferreteria",                                              comentarios:"",                                                                                                        messageId:"19fc84a08a5c1ce7" },
+  { fecha:"2026-08-03", nombre:"Gustavo Ariel",        apellido:"Nuñez",          razon_social:"Dist. Nuñez SRL",                     cuit:"30-71420990-2",  email:"distribuidora_nunez@hotmail.com.ar",telefono:"3794550487",        rubro:"Polirubro",                                               comentarios:"",                                                                                                        messageId:"19fc83bbd4a18a26" },
+  { fecha:"2026-08-03", nombre:"Pablo",                apellido:"Firbo",          razon_social:"Pablo Firbo",                         cuit:"20272798142",    email:"stropablogym@gmail.com",            telefono:"1168123301",        rubro:"Soy revendedor",                                          comentarios:"",                                                                                                        messageId:"19fc83b4327c9d7a" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
@@ -305,7 +309,7 @@ function save() {
 // ══════════════════════════════════════════════════════════════
 function s(v){ return (v || ''); }  // safe string
 
-function cleanTel(t){ return s(t).replace(/[\s\-\(\)\.�]/g,''); }
+function cleanTel(t){ return s(t).replace(/[\s\-\(\)\.�]/g,''); }
 
 function getProv(tel) {
   let c = cleanTel(tel);
@@ -457,7 +461,7 @@ const HEADS = {
   seguimiento: ['Acción','Estado','Fecha','Apellido / Nombre','Razón Social','CUIT','Email','Teléfono','Rubro','Provincia','Vendedor','Conversión','Comentarios','Contacto vendedor']
 };
 const BADGE_META = {
-  nuevo:       ['b-nuevo',       '0��� Nuevo'],
+  nuevo:       ['b-nuevo',       '0��� Nuevo'],
   enviado:     ['b-enviado',     '📤 Enviado'],
   seguimiento: ['b-seguimiento', '📞 Seguimiento'],
   convertido:  ['b-convertido',  '🏆 Convertido']
