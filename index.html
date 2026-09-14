@@ -156,6 +156,12 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  // ── Corrida 14/09/2026 (rutina diaria automática — Gmail infomayorista@brogas.com) ──
+  { fecha:"2026-09-13", nombre:"Dario", apellido:"Lozada", razon_social:"GP ACCESORIOS", cuit:"20224350431", email:"dflozada@hotmail.com", telefono:"3364005511", provincia:"Buenos Aires", localidad:"San Nicolas de los Arroyos", rubro:"Indumentaria y accesorios", comentarios:"Formato de venta: Venta al publico. Entro por WhatsApp a motoragentico (postventa@motoragentico.com), recibido 13/09/2026 ~21:58 (llego duplicado, 3 mails identicos). WhatsApp +5493364005511. PENDIENTE: asignacion de vendedor por zona (Buenos Aires) y contacto.", messageId:"1a09d6c536e66062" },
+  { fecha:"2026-09-13", nombre:"Silvana", apellido:"Cerella", razon_social:"EXTREMO OUTDOOR", cuit:"27182778120", email:"extremooutdoorbolson@gmail.com", telefono:"02944609282", provincia:"Rio Negro", localidad:"El Bolson", rubro:"Camping pesca indumentaria", comentarios:"Formato de venta: Venta al publico. \"Me interesa anexar vtros productos\". Entro 13/09/2026 11:26 por la landing de mayoristas (brogas1958.com/mayoristas/contacto-mayoristas). PENDIENTE: asignacion de vendedor por zona (Rio Negro) y contacto.", messageId:"1a09b297f9fde156" },
+  { fecha:"2026-09-13", nombre:"Mauro Ariel", apellido:"Serrano", razon_social:"Mauro Ariel Serrano", cuit:"20318218863", email:"box953@outlook.com", telefono:"2236202020", provincia:"Buenos Aires", localidad:"Mar de Cobo", rubro:"Electricidad, iluminacion y afines", comentarios:"Formato de venta: Venta al publico. \"Quisiera que me envien catalogo y condiciones de venta. Gracias!\". Entro 13/09/2026 22:49 por la landing de mayoristas (campana paga Instagram/Facebook Ads). PRIORIDAD ALTA: pedido explicito de catalogo/condiciones — se dejo un borrador de respuesta en Gmail (draft) pendiente de revision antes de enviar. PENDIENTE: asignacion de vendedor por zona (Buenos Aires) y contacto.", messageId:"1a09d9aff3f0ab0f" },
+  { fecha:"2026-09-14", nombre:"Fernando", apellido:"Yacob", razon_social:"Fernando Yacob", cuit:"20290692467", email:"fernandoyacob@hotmail.com", telefono:"02984368900", provincia:"Rio Negro", localidad:"Darwin", rubro:"Comerciante", comentarios:"Formato de venta: Venta al publico. Sin comentarios adicionales. Entro 14/09/2026 00:19 por la landing de mayoristas. PENDIENTE: asignacion de vendedor por zona (Rio Negro) y contacto.", messageId:"1a09ded1ed20a2d6" },
+  { fecha:"2026-09-13", nombre:"Juan Daniel", apellido:"Soria", razon_social:"Pavimento Alegre", cuit:"20438173715", email:"soria.juan.daniel@gmail.com", telefono:"1168930830", provincia:"Capital Federal", localidad:"CABA", rubro:"Ferreteria", comentarios:"Formato de venta: Venta al publico. Entro por WhatsApp a motoragentico (postventa@motoragentico.com), recibido 13/09/2026 09:07. WhatsApp +5491131062930. PENDIENTE: asignacion de vendedor por zona (CABA) y contacto.", messageId:"1a09aaab9b11d6b8" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
@@ -305,7 +311,7 @@ function save() {
 // ══════════════════════════════════════════════════════════════
 function s(v){ return (v || ''); }  // safe string
 
-function cleanTel(t){ return s(t).replace(/[\s\-\(\)\.�]/g,''); }
+function cleanTel(t){ return s(t).replace(/[\s\-\(\)\.�]/g,''); }
 
 function getProv(tel) {
   let c = cleanTel(tel);
@@ -457,7 +463,7 @@ const HEADS = {
   seguimiento: ['Acción','Estado','Fecha','Apellido / Nombre','Razón Social','CUIT','Email','Teléfono','Rubro','Provincia','Vendedor','Conversión','Comentarios','Contacto vendedor']
 };
 const BADGE_META = {
-  nuevo:       ['b-nuevo',       '0��� Nuevo'],
+  nuevo:       ['b-nuevo',       '0��� Nuevo'],
   enviado:     ['b-enviado',     '📤 Enviado'],
   seguimiento: ['b-seguimiento', '📞 Seguimiento'],
   convertido:  ['b-convertido',  '🏆 Convertido']
