@@ -156,6 +156,11 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-09-30", nombre:"Diego",                  apellido:"",               razon_social:"Bonpolyc Pokicarbonato SRL",          cuit:"30705641656",    email:"Dimaplatplasticos@gmail.com",       telefono:"1126333232",        rubro:"Productos plásticos",                                     comentarios:"Entró por WhatsApp (CABA y Buenos Aires: Chacarita y Pilar).",                                         messageId:"1a0f3b0e3ddcd4d6" },
+  { fecha:"2026-09-30", nombre:"Hector",                 apellido:"Mercado",        razon_social:"Todo obra",                           cuit:"20-36435232-9",  email:"hector.xwlab@hotmail.com",          telefono:"2994153957",        rubro:"Ferreteria",                                              comentarios:"Neuquén, Buta Ranquil. CUIT recibido incompleto (20 36435232 9) - verificar.",                         messageId:"1a0f392041f04116" },
+  { fecha:"2026-09-30", nombre:"Santiago",               apellido:"Cosentino",      razon_social:"Santiago cosentino",                  cuit:"20279309813",    email:"disentino@gmail.com",               telefono:"1164823959",        rubro:"Hogar y aire libre",                                      comentarios:"Me gustaría comercializar sus productos en nuestro canal de venta",                                    messageId:"1a0f2ef62c6a1aae" },
+  { fecha:"2026-09-30", nombre:"Guillermo",              apellido:"Lopez",          razon_social:"Guillermo Lopez",                     cuit:"23256810859",    email:"guillermolopez123.gl@gmail.com",    telefono:"1155053246",        rubro:"Electrodomésticos y Artículos para el hogar",             comentarios:"",                                                                                                     messageId:"1a0f2bef5ccde5c5" },
+  { fecha:"2026-09-30", nombre:"Walter",                 apellido:"Duré",           razon_social:"Crean mil ideas SA",                  cuit:"30716091119",    email:"walter.dure@milideas.com.ar",       telefono:"1180024000",        rubro:"regalos corporativos",                                    comentarios:"",                                                                                                     messageId:"1a0f2b6f3374ee37" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
@@ -615,8 +620,13 @@ document.getElementById('convModal').addEventListener('click', e => {
 
 populateFilters();
 applyFilters();
+// BITACORA DE ACTIVIDAD (rutina diaria)
+const activityLog = [
+  { fecha:"2026-10-01", resumen:"5 leads mayoristas nuevos cargados (4 formulario web + 1 WhatsApp); 3 pedidos de reasignación pendientes (Perkins x2, Ferreyra x1); sin reclamos ni pagos demorados; sin borradores." }
+];
 document.getElementById('updateInfo').textContent =
-  'Última actualización: ' + new Date().toLocaleString('es-AR', { timeZone:'America/Argentina/Buenos_Aires' });
+  'Última actualización: ' + new Date().toLocaleString('es-AR', { timeZone:'America/Argentina/Buenos_Aires' }) +
+  (activityLog.length ? ' · Bitácora ' + activityLog[0].fecha + ': ' + activityLog[0].resumen : '');
 </script>
 </body>
 </html>
