@@ -133,6 +133,10 @@ tr.row-conv:hover { background:#fff9c4; }
     <tbody id="tbody"></tbody>
   </table>
 </div>
+<div class="update-info" id="crmLog" style="text-align:left;line-height:1.6">
+  <b>Bitácora de actividad</b><br>
+  <b>2026-10-24</b> · Rutina diaria: 8 consultas mayoristas nuevas cargadas (formulario brogas1958.com; Rivas también llegó duplicado por WhatsApp/postventa@motoragentico.com). Ningún remitente figura en VENDEDORES_DIRECTOS 2.xlsx → todos son leads nuevos. Sin pagos demorados, reclamos ni pedidos urgentes → sin borradores. Pendiente: responder a Oscar Torres (Mendoza) sobre requisitos fiscales para revender. Mails internos (comex: ingreso mercadería REF 3053 el 27/10 11-12hs; hilo discos de corte/Coto 100 packs) solo informativos.
+</div>
 <div class="update-info" id="updateInfo"></div>
 <div class="toast" id="toast"></div>
 
@@ -156,6 +160,14 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-10-23", nombre:"Esteban Omar", apellido:"Rivas", razon_social:"Esteban Rivas (Ferrehogar&Obras)", cuit:"20206459345", email:"ferrehogaryobras@gmail.com", telefono:"2212212018", rubro:"Ferretería", comentarios:"Tengo Ferretería (también ingresó por WhatsApp vía postventa@motoragentico.com)", messageId:"1a169fe27ff9614a" },
+  { fecha:"2026-10-23", nombre:"Roberto", apellido:"Marconi", razon_social:"Roberto Marconi", cuit:"20204943487", email:"ferremarc083@gmail.com", telefono:"+542314618287", rubro:"Ferretería", comentarios:"", messageId:"1a169d9bd9ef74f1" },
+  { fecha:"2026-10-23", nombre:"Juan Facundo Manuel", apellido:"Ferreyra", razon_social:"Facundo Ferreyra", cuit:"20311528786", email:"elfaku1414@gmail.com", telefono:"3364676213", rubro:"Inicial", comentarios:"Soy un entusiasta de las ventas!", messageId:"1a1693ec5393f355" },
+  { fecha:"2026-10-23", nombre:"Bruno", apellido:"Quirico", razon_social:"Ruben Juan Quirico", cuit:"20108321769", email:"distribuidoraferrearg@gmail.com", telefono:"1140383558", rubro:"Ferretería", comentarios:"Respondió 'Gracias por tu contacto' quedando a la espera", messageId:"1a168f476b8cc87c" },
+  { fecha:"2026-10-23", nombre:"María Natalia", apellido:"Ferreyra", razon_social:"Natalia Ferreyra", cuit:"", email:"natalia.ferreyra439@gmail.com", telefono:"2245517984", rubro:"Venta de artículos importados, herramientas y utensilios", comentarios:"Food truck + venta de importados en Dolores; CUIT no informado (cargó el mail en el campo)", messageId:"1a16876559d246f4" },
+  { fecha:"2026-10-23", nombre:"Agustín", apellido:"Beltrán", razon_social:"Agustín Beltrán", cuit:"20325277549", email:"agustinbeltran120@gmail.com", telefono:"1141577862", rubro:"Bazar gastronómico", comentarios:"Quisiera obtener lista y condiciones para empezar a ofrecer sus productos en mi local y tienda online.", messageId:"1a16872711de971c" },
+  { fecha:"2026-10-22", nombre:"Hugo Emanuel", apellido:"Maquieira", razon_social:"Hugo Maquieira", cuit:"29293647365", email:"emanuel.maquieira@gmail.com", telefono:"1157680660", rubro:"Polirubro", comentarios:"Quisiera catalogo de productos y precios", messageId:"1a16671dfeb424c6" },
+  { fecha:"2026-10-22", nombre:"Oscar Jose", apellido:"Torres", razon_social:"Base Metalúrgica", cuit:"20204527343", email:"transportestrrs@gmail.com", telefono:"+5492615166221", rubro:"Taller metalúrgico de camiones y máquinas viales", comentarios:"Quiere revender en Mendoza (discos abrasivos, herramientas). Sin facturación activa: consulta si debe inscribirse como monotributista/RI. Pide requisitos, condiciones y precios.", messageId:"1a16401b928ed5d2" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
