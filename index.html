@@ -134,6 +134,10 @@ tr.row-conv:hover { background:#fff9c4; }
   </table>
 </div>
 <div class="update-info" id="updateInfo"></div>
+<details class="update-info" id="activityLog" style="text-align:left;max-width:900px;margin:8px auto">
+  <summary>📋 Registro de actividad (rutina diaria)</summary>
+  <ul id="activityLogList" style="margin:6px 0 0 18px"></ul>
+</details>
 <div class="toast" id="toast"></div>
 
 <div class="modal-bg" id="convModal">
@@ -156,6 +160,8 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-11-10", nombre:"Walter",               apellido:"Timi",           razon_social:"Walter Timi",                         cuit:"20204378755",    email:"casatimi@yahoo.com.ar",             telefono:"02914381040",       rubro:"Varios",                                                  comentarios:"Bahía Blanca (BA). Formato: Venta al público. Form web mayoristas.",                                      messageId:"1a1c83307479e1c9" },
+  { fecha:"2026-11-10", nombre:"Eduardo Enrique",      apellido:"Piana",          razon_social:"Piana Eduardo Enrique",               cuit:"20104651497",    email:"lautaronos@gmail.com",              telefono:"1164573791",        rubro:"Artículos para kiosco",                                   comentarios:"Lanús (BA). Formato: Distribución. Ingresó por WhatsApp (Brogui postventa).",                              messageId:"1a1c6c131dbe8006" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
@@ -612,6 +618,22 @@ function populateFilters() {
 document.getElementById('convModal').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
 });
+
+// ══════════════════════════════════════════════════════════════
+//  REGISTRO DE ACTIVIDAD (agregado por la rutina diaria de Gmail)
+// ══════════════════════════════════════════════════════════════
+const ACTIVITY_LOG = [
+  { fecha:"2026-11-11", texto:"Rutina diaria: 52 hilos en inbox (últimas 24h). 2 leads mayoristas nuevos agregados: Walter Timi (Bahía Blanca, BA – form web) y Piana Eduardo Enrique (Lanús, BA – WhatsApp). Ninguno figura como cliente previo. Sin reclamos, pagos demorados ni pedidos urgentes → sin borradores de respuesta. Resto: newsletters/promos y 3 propuestas comerciales de proveedores (Buzzmonitor, Brand Partners x2) sin acción CRM." }
+];
+(function renderLog(){
+  const ul = document.getElementById('activityLogList');
+  if (!ul) return;
+  ACTIVITY_LOG.slice().sort((a,b)=>b.fecha.localeCompare(a.fecha)).forEach(e=>{
+    const li = document.createElement('li');
+    li.textContent = e.fecha + ' — ' + e.texto;
+    ul.appendChild(li);
+  });
+})();
 
 populateFilters();
 applyFilters();
