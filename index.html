@@ -96,6 +96,11 @@ tr.row-conv:hover { background:#fff9c4; }
 .empty { text-align:center; padding:54px 20px; color:#bbb; }
 .empty .ico { font-size:40px; margin-bottom:8px; }
 .update-info { padding:7px 32px; font-size:11px; color:#bbb; text-align:right; }
+.crm-log { margin:8px 32px 32px; font-size:12px; color:#555; }
+.crm-log h3 { font-size:13px; margin:0 0 6px; color:#333; }
+.crm-log table { width:100%; border-collapse:collapse; }
+.crm-log td, .crm-log th { border-bottom:1px solid #eee; padding:5px 6px; text-align:left; vertical-align:top; }
+.crm-log th { color:#888; font-weight:600; }
 </style>
 </head>
 <body>
@@ -134,6 +139,7 @@ tr.row-conv:hover { background:#fff9c4; }
   </table>
 </div>
 <div class="update-info" id="updateInfo"></div>
+<div class="crm-log" id="crmLog"></div>
 <div class="toast" id="toast"></div>
 
 <div class="modal-bg" id="convModal">
@@ -156,6 +162,7 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-11-11", nombre:"Sergio Gabriel",        apellido:"Rostagno",       razon_social:"Mi caja de herramientas",             cuit:"20369295137",    email:"S.rostagno@live.com",               telefono:"1138188265",        rubro:"Venta de insumos de ferretería",                          comentarios:"Ingresó por WhatsApp (Brogui). Localidad: Ituzaingó, Buenos Aires. Formato: venta al público.", messageId:"1a1cbdbd9abcf267" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
@@ -612,6 +619,22 @@ function populateFilters() {
 document.getElementById('convModal').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
 });
+
+// ══════════════════════════════════════════════════════════════
+//  LOG DIARIO CRM (lo actualiza la rutina programada)
+// ══════════════════════════════════════════════════════════════
+const CRM_LOG = [
+  { fecha:"2026-11-12", resumen:"3 emails de negocio en 24h. Nuevo lead mayorista: Sergio Gabriel Rostagno – Mi caja de herramientas (Ituzaingó, BA; ingresó por WhatsApp/Brogui). Agregado a Nuevos leads. Borrador de bienvenida en Gmail." },
+  { fecha:"2026-11-12", resumen:"Messe Frankfurt (Lucía Erba Dupré): oferta de participación ExpoFerretera 2027, lote 1H-01 (21 m²). Verificar datos, firmar y devolver la última hoja para formalizar la reserva; incluye cronograma de pagos. Borrador de acuse de recibo en Gmail." },
+  { fecha:"2026-11-12", resumen:"Comex (interno): ingreso de mercadería Ref 3433 cargado en sistema, en control de calidad (hilo REF 3047). Solo informativo." }
+];
+function renderLog() {
+  const el = document.getElementById('crmLog');
+  if (!el) return;
+  el.innerHTML = '<h3>📝 Registro de actividad diaria</h3><table><tr><th>Fecha</th><th>Actividad</th></tr>' +
+    CRM_LOG.map(r => `<tr><td style="white-space:nowrap">${r.fecha}</td><td>${r.resumen}</td></tr>`).join('') + '</table>';
+}
+renderLog();
 
 populateFilters();
 applyFilters();
