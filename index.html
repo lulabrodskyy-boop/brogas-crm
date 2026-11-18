@@ -96,6 +96,11 @@ tr.row-conv:hover { background:#fff9c4; }
 .empty { text-align:center; padding:54px 20px; color:#bbb; }
 .empty .ico { font-size:40px; margin-bottom:8px; }
 .update-info { padding:7px 32px; font-size:11px; color:#bbb; text-align:right; }
+.activity-log { margin:6px 32px 28px; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); padding:16px 20px; }
+.activity-log h2 { font-size:14px; color:#0f3460; margin-bottom:10px; }
+.activity-log .entry { border-left:3px solid #0f3460; padding:6px 12px; margin-bottom:10px; font-size:12.5px; line-height:1.5; }
+.activity-log .entry .d { font-weight:700; color:#1a1a2e; }
+.activity-log .entry ul { margin:4px 0 0 18px; }
 </style>
 </head>
 <body>
@@ -134,6 +139,19 @@ tr.row-conv:hover { background:#fff9c4; }
   </table>
 </div>
 <div class="update-info" id="updateInfo"></div>
+<div class="activity-log" id="activityLog">
+  <h2>📋 Registro de actividad (rutina diaria CRM)</h2>
+  <!-- LOG_ENTRIES: agregar nuevas entradas arriba -->
+  <div class="entry">
+    <div class="d">2026-11-18 — Revisión bandeja infomayorista@ (últimas 24 h)</div>
+    <ul>
+      <li>1 lead nuevo: <b>Visamax</b> (Jorge Alejandro Laborde, Ferretería, Distribución, Isidro Casanova, BA) — no figura en VENDEDORES_DIRECTOS ni en el CRM. Prioridad media: asignar vendedor y contactar.</li>
+      <li>Agregado también <b>Bulonera Torcuato</b> (ingresó 16/11, fuera de la ventana de 24 h pero faltaba en el CRM).</li>
+      <li>Sin consultas de pedidos, reclamos ni problemas de pago de clientes → no se generaron borradores de respuesta.</li>
+      <li>Nota administrativa: Messe Frankfurt envió factura ExpoFerretera a Brogas S.A. (pago por e-cheq) — derivar a administración.</li>
+    </ul>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <div class="modal-bg" id="convModal">
@@ -156,6 +174,8 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-11-17", nombre:"Jorge Alejandro",       apellido:"Laborde",        razon_social:"Visamax",                             cuit:"20-22759415-3",  email:"distribuidoravisamax@gmail.com",    telefono:"1161660688",        rubro:"Ferretería",                                              comentarios:"Ingresó por WhatsApp (Brogui). Isidro Casanova, Buenos Aires. Formato: Distribución.",                     messageId:"1a1e96b0ac7e0e8d" },
+  { fecha:"2026-11-16", nombre:"Pablo",                 apellido:"",               razon_social:"Bulonera Torcuato",                   cuit:"30622567519",    email:"ventastorcuato@btsrl.com.ar",       telefono:"1130290748",        rubro:"Ferretería y bulonería",                                  comentarios:"Ingresó por WhatsApp (Brogui). Don Torcuato, Buenos Aires. Formato: Venta al público.",                    messageId:"1a1e4de7efda3071" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
