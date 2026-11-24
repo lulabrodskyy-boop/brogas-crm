@@ -95,6 +95,7 @@ tr.row-conv:hover { background:#fff9c4; }
 .toast.show { transform:translateY(0); opacity:1; }
 .empty { text-align:center; padding:54px 20px; color:#bbb; }
 .empty .ico { font-size:40px; margin-bottom:8px; }
+.crm-log { padding:16px 32px 4px; } .crm-log h3 { font-size:14px; margin-bottom:8px; color:#1a1a2e; } .crm-log td { font-size:12px; vertical-align:top; }
 .update-info { padding:7px 32px; font-size:11px; color:#bbb; text-align:right; }
 </style>
 </head>
@@ -131,6 +132,15 @@ tr.row-conv:hover { background:#fff9c4; }
   <table>
     <thead><tr id="thead"></tr></thead>
     <tbody id="tbody"></tbody>
+  </table>
+</div>
+<div class="crm-log" id="crmLog">
+  <h3>🗒️ Registro de actividad diaria (rutina CRM)</h3>
+  <table>
+    <thead><tr><th>Fecha</th><th>Emails revisados</th><th>Leads nuevos</th><th>Alta prioridad</th><th>Borradores</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td>2026-11-24</td><td>2 formularios mayoristas (infomayorista@brogas.com); resto promociones</td><td>2 — Mario Daniel Sanchez (Ferretería, La Plata); Daniel Singer (Tienda Terrazas multirrubro, Pilar)</td><td>0</td><td>0</td><td>Remitentes no registrados (nuevos). Sin reclamos, pagos ni pedidos urgentes. Pendiente: derivar a vendedor.</td></tr>
+    </tbody>
   </table>
 </div>
 <div class="update-info" id="updateInfo"></div>
@@ -182,7 +192,10 @@ const leads = [
   { fecha:"2026-03-20", nombre:"Bautista",               apellido:"Bugnon",         razon_social:"Bugnon bautista",                     cuit:"20-47768729-7",  email:"davorsantafe@gmail.com",            telefono:"3425261035",        rubro:"Ferretería",                                              comentarios:"",                                                                                                        messageId:"19d0b2bf22c2b95e" },
   { fecha:"2026-03-20", nombre:"Manuel",                 apellido:"",               razon_social:"Joacin",                              cuit:"30690750186",    email:"deazevedoloureiromanuel@gmail.com", telefono:"1180590940",        rubro:"Artículos del hogar y camping",                           comentarios:"",                                                                                                        messageId:"19d0b1a73ecd37f7" },
   { fecha:"2026-03-19", nombre:"Oscar Daniel",           apellido:"González",       razon_social:"INSUMOS ODG",                         cuit:"20352277860",    email:"insumosodg@gmail.com",              telefono:"1131674501",        rubro:"Distribuidor",                                            comentarios:"",                                                                                                        messageId:"19d065156a580a4e" },
-  { fecha:"2026-03-19", nombre:"Carlos",                 apellido:"Cafferata",      razon_social:"CEC SA",                              cuit:"30619256634",    email:"cafferata@cecsa.com.ar",            telefono:"1144730562",        rubro:"Supermercados",                                           comentarios:"Interesado en gas para encendedores. Precio y compras mínimas.",                                          messageId:"19d04a24fa207bff" }
+  { fecha:"2026-03-19", nombre:"Carlos",                 apellido:"Cafferata",      razon_social:"CEC SA",                              cuit:"30619256634",    email:"cafferata@cecsa.com.ar",            telefono:"1144730562",        rubro:"Supermercados",                                           comentarios:"Interesado en gas para encendedores. Precio y compras mínimas.",                                          messageId:"19d04a24fa207bff" },
+  // ── Agregados por rutina CRM 2026-11-24 (al final para no alterar la rotación de vendedores existente) ──
+  { fecha:"2026-11-23", nombre:"Mario Daniel",           apellido:"Sanchez",        razon_social:"Daniel Sanchez",                      cuit:"205980455",      email:"danipincha46@gmail.com",            telefono:"2215669357",        rubro:"Ferretería",                                              comentarios:"La Plata, Bs As. Venta al público. CUIT incompleto (9 dígitos), verificar.",                             messageId:"1a207c5deea42bdd" },
+  { fecha:"2026-11-23", nombre:"Daniel",                 apellido:"Singer",         razon_social:"Tienda Terrazas multirrubro",         cuit:"20-17103711-6",  email:"danielsinger1965@gmail.com",        telefono:"11332806759",       rubro:"Multirrubro",                                             comentarios:"Pilar, Bs As. Venta al público. Teléfono con 11 dígitos, verificar.",                                    messageId:"1a20966503c8bebe" },
 ];
 
 // ══════════════════════════════════════════════════════════════
