@@ -96,6 +96,15 @@ tr.row-conv:hover { background:#fff9c4; }
 .empty { text-align:center; padding:54px 20px; color:#bbb; }
 .empty .ico { font-size:40px; margin-bottom:8px; }
 .update-info { padding:7px 32px; font-size:11px; color:#bbb; text-align:right; }
+.crm-log { max-width:1400px; margin:18px auto; padding:0 16px; }
+.crm-log details { background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.06); padding:12px 18px; margin-bottom:10px; }
+.crm-log summary { cursor:pointer; font-weight:700; font-size:14px; }
+.crm-log .tw { overflow-x:auto; }
+.crm-log table { width:100%; border-collapse:collapse; margin-top:10px; font-size:12.5px; }
+.crm-log th, .crm-log td { text-align:left; padding:6px 8px; border-bottom:1px solid #eee; vertical-align:top; }
+.crm-log th { background:#f5f6f8; font-weight:600; }
+.crm-log .alta { color:#c62828; font-weight:700; } .crm-log .media { color:#e65100; font-weight:600; } .crm-log .baja { color:#607d8b; }
+.crm-log p { font-size:12.5px; margin-top:8px; color:#444; }
 </style>
 </head>
 <body>
@@ -133,6 +142,26 @@ tr.row-conv:hover { background:#fff9c4; }
     <tbody id="tbody"></tbody>
   </table>
 </div>
+<div class="crm-log" id="crmLog">
+  <h2 style="font-size:16px;margin-bottom:8px;">📒 Registro diario CRM</h2>
+  <!-- LOG_ENTRIES: agregar nuevas entradas arriba -->
+  <details open>
+    <summary>2026-11-27 — 9 correos de negocio revisados · 2 alta prioridad · 2 borradores · 1 lead nuevo</summary>
+    <div class="tw"><table>
+      <tr><th>Cliente / Remitente</th><th>Asunto</th><th>Tipo</th><th>Prioridad</th><th>Acción</th></tr>
+      <tr><td>Nación Servicios / Tienda BNA (facturacion@nacionservicios.com.ar) — <i>no registrado</i></td><td>Solicitud de ODP y detalle de retenciones (2º aviso)</td><td>Pago</td><td class="alta">Alta</td><td>Pago parcial 20/11 $355.257,31 no cancela la deuda. Enviar ODP + retenciones. <b>Borrador creado.</b></td></tr>
+      <tr><td>Sebastián Matías Guerra (sebastianmatiasg@gmail.com) — <i>no registrado</i></td><td>Reclamo a Andreani por pedido no entregado</td><td>Reclamo / estado de pedido</td><td class="alta">Alta</td><td>13 días en sucursal destino. Caso CAS-6373536-V7Z4Z5. Escalar a Andreani; reenvío o NC si no se resuelve. <b>Borrador creado.</b></td></tr>
+      <tr><td>Pepe (Josecarlosruesta@gmail.com) vía Brogui — <i>no registrado</i></td><td>[PV-2611-0010] Consulta técnica — anafe 8101</td><td>Consulta producto (homologación)</td><td class="media">Media</td><td>Postventa/Servicio técnico: enviar certificado de homologación del anafe 8101 GN.</td></tr>
+      <tr><td>Augusto Lambrecht — LAMBRECHT A Y BENETTON (ferreterialaazucena@gmail.com) — <i>NUEVO</i></td><td>Nuevo cliente mayorista (WhatsApp)</td><td>Lead nuevo</td><td class="media">Media</td><td>Agregado a Nuevos leads. Quequén, Bs.As. → rotación BA. Asignar vendedor.</td></tr>
+      <tr><td>Autoservicio Emanuel SRL / Joste multirrubro (johanita136@hotmail.com) — <i>NUEVO</i></td><td>Formulario de Alta de Cliente</td><td>Alta de cliente</td><td class="media">Media</td><td>Canals, Córdoba. Ejecutivo: Matías Gauna. Cobranzas: procesar alta (contado, monotributista).</td></tr>
+      <tr><td>Lusqtoff — Adrián Muñoz</td><td>Re: Solicitud Referencias</td><td>Referencia comercial</td><td class="baja">Baja</td><td>Referencia excelente (crédito $20M, 30-60-90). Ya reenviada a Cristian Veltri.</td></tr>
+      <tr><td>Iturria S.A. — Vanina Nuccetelli</td><td>REF COM Loyato Laureano Matías</td><td>Referencia comercial</td><td class="baja">Baja</td><td>Límite $9.078.000, buen concepto, cumple plazos. Archivar en legajo de alta.</td></tr>
+      <tr><td>Messe Frankfurt (ExpoFerretera) / Integración Empresaria (Artefacta 2027)</td><td>Propuestas de ferias</td><td>Comercial / marketing</td><td class="baja">Baja</td><td>Revisar con Marketing.</td></tr>
+      <tr><td>Interno (comex, F. Akerman)</td><td>Alta Estufa Garrafera · Nuevos anafes AN-11/AN-22</td><td>Producto interno</td><td class="baja">Baja</td><td>Informativo — sin acción de CRM.</td></tr>
+    </table></div>
+    <p>Ningún remitente coincide con VENDEDORES_DIRECTOS 2.xlsx (el archivo contiene solo vendedores, no clientes). Se omitieron correos personales/promocionales.</p>
+  </details>
+</div>
 <div class="update-info" id="updateInfo"></div>
 <div class="toast" id="toast"></div>
 
@@ -156,6 +185,7 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-11-26", nombre:"Augusto",               apellido:"Lambrecht",      razon_social:"LAMBRECHT A Y BENETTON A S.CAP I SECC IV", cuit:"30-71959392-1", email:"ferreterialaazucena@gmail.com",     telefono:"2262625081",        rubro:"Bulonera y ferretería",                                   comentarios:"Ingresó por WhatsApp (Brogui). Quequén, Buenos Aires. Venta al público.",                                messageId:"1a2191ce537d0a83" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
