@@ -96,6 +96,12 @@ tr.row-conv:hover { background:#fff9c4; }
 .empty { text-align:center; padding:54px 20px; color:#bbb; }
 .empty .ico { font-size:40px; margin-bottom:8px; }
 .update-info { padding:7px 32px; font-size:11px; color:#bbb; text-align:right; }
+.crm-log { margin:8px 32px 24px; font-size:12px; color:#555; }
+.crm-log summary { cursor:pointer; font-weight:600; padding:6px 0; }
+.crm-log h4 { margin:10px 0 2px; font-size:12px; color:#333; }
+.crm-log table { width:100%; border-collapse:collapse; margin-top:6px; }
+.crm-log th, .crm-log td { text-align:left; padding:5px 8px; border-bottom:1px solid #eee; vertical-align:top; }
+.crm-log th { color:#888; font-weight:600; }
 </style>
 </head>
 <body>
@@ -134,6 +140,28 @@ tr.row-conv:hover { background:#fff9c4; }
   </table>
 </div>
 <div class="update-info" id="updateInfo"></div>
+<details class="crm-log" id="crmLog" open>
+  <summary>📋 Registro de actividad diaria (rutina CRM)</summary>
+  <!-- LOG: agregar nuevas entradas arriba -->
+  <div class="log-day">
+    <h4>2026-11-28 — 9 correos relevantes (últimas 24 h), 2 leads nuevos, 2 borradores</h4>
+    <table>
+      <thead><tr><th>Cliente</th><th>Asunto</th><th>Tipo</th><th>Prioridad</th><th>Acción</th></tr></thead>
+      <tbody>
+        <tr><td>Naldo (V. Macaroni) — cliente final Morello, Erik Brian</td><td>RV: Mar del Plata // MORELLO, ERIK BRIAN</td><td>Reclamo / garantía</td><td>🔴 Alta</td><td>Reenvío sin respuesta desde 25/11 (anafe AN-02-PBL, 1 hornalla no funciona). Borrador de respuesta creado.</td></tr>
+        <tr><td>Frávega</td><td>Caso 05002680</td><td>Cancelación / nota de crédito</td><td>🔴 Alta</td><td>Cliente no retiró; vuelve el producto. Piden NC si fue facturado. Borrador de respuesta creado.</td></tr>
+        <tr><td>Daniela Silvero (Pinamar)</td><td>Nuevo cliente mayorista</td><td>Lead nuevo</td><td>🟡 Media</td><td>Agregado al CRM. Asignar vendedor BA.</td></tr>
+        <tr><td>BORZAK SRL (Los Polvorines)</td><td>Nuevo cliente mayorista</td><td>Lead nuevo (distribución)</td><td>🟡 Media</td><td>Agregado al CRM. Asignar vendedor BA.</td></tr>
+        <tr><td>Maximiliano Colombo</td><td>[PV-2611-0011] Anafe 2H (art. 8203) para gas natural, necesita envasado</td><td>Consulta técnica</td><td>🟡 Media</td><td>Servicio técnico debe indicar la conversión a GLP.</td></tr>
+        <tr><td>Lautaro Colovini (Rosario)</td><td>Consulta repuestos — tapa botella 650 ml</td><td>Repuesto / precio</td><td>🟢 Baja</td><td>Responder precio del repuesto 04.TAP-BOT650NE.</td></tr>
+        <tr><td>Interno — Compras</td><td>Fwd: Facturación Octubre 2026 BROGAS / STRIKE</td><td>Facturación</td><td>🟢 Baja</td><td>Informativo ("Ya está").</td></tr>
+        <tr><td>Interno — Cristian Veltri</td><td>Solicitud Referencias</td><td>Interno</td><td>🟢 Baja</td><td>Revisar.</td></tr>
+        <tr><td>Distribuidora Valimart</td><td>Cambios Valimart (enviado por R. Bigata)</td><td>Cambios</td><td>🟢 Baja</td><td>Seguimiento de Ventas, sin acción.</td></tr>
+      </tbody>
+    </table>
+    <p>Ningún remitente externo coincide con VENDEDORES_DIRECTOS 2.xlsx (es la lista de vendedores, no de clientes): todos marcados como no reconocidos / nuevos.</p>
+  </div>
+</details>
 <div class="toast" id="toast"></div>
 
 <div class="modal-bg" id="convModal">
@@ -156,6 +184,8 @@ tr.row-conv:hover { background:#fff9c4; }
 //  LEADS (hardcoded — se agregan nuevos desde Gmail/Sheet)
 // ══════════════════════════════════════════════════════════════
 const leads = [
+  { fecha:"2026-11-27", nombre:"Daniela",              apellido:"Silvero",        razon_social:"Daniela Silvero",                     cuit:"27340916587",    email:"gestiontotal2024@gmail.com",        telefono:"+5491123903141",    provincia:"BUENOS AIRES", rubro:"Polirubro",                                         comentarios:"Ingreso por WhatsApp (Brogui). Localidad: Pinamar. Formato: venta al público.",            messageId:"1a21f48b6ce6bdcf" },
+  { fecha:"2026-11-27", nombre:"Juan",                 apellido:"",               razon_social:"BORZAK SRL",                          cuit:"33-68156048-9",  email:"borzaksrl@yahoo.com.ar",            telefono:"+5491131047515",    provincia:"BUENOS AIRES", rubro:"Ferretería",                                        comentarios:"Ingreso por WhatsApp (Brogui). Localidad: Los Polvorines. Formato: distribución.",        messageId:"1a21d65a7945a7d4" },
   { fecha:"2026-04-08", nombre:"Carlos",               apellido:"",               razon_social:"Carlos Rusconi",                      cuit:"20341773238",    email:"pumbacespedyriegos@gmail.com",      telefono:"3460694740",        rubro:"Jardin",                                                  comentarios:"",                                                                                                        messageId:"19d6cfcb5b9c1e57" },
   { fecha:"2026-04-07", nombre:"Gabriel",              apellido:"Cleppe",         razon_social:"Casa ferraro",                        cuit:"20237751524",    email:"gabycleppe@gmail.com",              telefono:"2323532448",        rubro:"Venta de repuestos y artefactos a gas",                   comentarios:"",                                                                                                        messageId:"19d69bf585aefc37" },
   { fecha:"2026-04-06", nombre:"Matias Guillermo",      apellido:"Cruz",           razon_social:"Matías Guillermo Cruz",               cuit:"20319360035",    email:"matiascruz_g@hotmail.com",          telefono:"3884544634",        rubro:"Pintureria",                                              comentarios:"",                                                                                                        messageId:"19d6534ad69d2f60" },
@@ -320,7 +350,7 @@ function getProv(tel) {
 }
 
 function getDefaultVendName(lead) {
-  const prov = getProv(lead.telefono);
+  const prov = (lead.provincia || getProv(lead.telefono));
   const idx  = leads.indexOf(lead);
   if (prov === "BUENOS AIRES")    return BA_ROTATION[idx % BA_ROTATION.length];
   if (prov === "CAPITAL FEDERAL") return CABA_ROTATION[idx % CABA_ROTATION.length];
@@ -479,7 +509,7 @@ function renderTable(data) {
   data.forEach(lead => {
     const mid    = lead.messageId;
     const estado = getEstado(mid);
-    const prov   = getProv(lead.telefono);
+    const prov   = (lead.provincia || getProv(lead.telefono));
     const vend   = getVend(lead);
     const over   = !!vendedorOverrides[mid];
     const [bc, bl] = BADGE_META[estado] || BADGE_META.nuevo;
@@ -574,7 +604,7 @@ function applyFilters() {
   const fR = document.getElementById('filterRubro').value;
 
   const out = tabLeads().filter(lead => {
-    const p = getProv(lead.telefono);
+    const p = (lead.provincia || getProv(lead.telefono));
     const v = getVend(lead).nombre;
     const hayMatch = !q ||
       (s(lead.nombre) + ' ' + s(lead.apellido)).toLowerCase().includes(q) ||
@@ -591,7 +621,7 @@ function applyFilters() {
 }
 
 function populateFilters() {
-  const provs  = [...new Set(leads.map(l => getProv(l.telefono)))].sort();
+  const provs  = [...new Set(leads.map(l => l.provincia || getProv(l.telefono)))].sort();
   const rubros = [...new Set(leads.map(l => s(l.rubro)).filter(Boolean))].sort();
   const fp = document.getElementById('filterProvincia');
   provs.forEach(p => { fp.innerHTML += `<option value="${p}">${p}</option>`; });
